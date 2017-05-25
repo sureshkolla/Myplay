@@ -135,6 +135,8 @@ $app->get('/getcategory', function() use ($app){
     $response = array();
     $response['error'] = false;
     $response['allcategories'] = array();
+	//exit;
+	
     while($row = $result->fetch_assoc()){
         $temp = array();
         $temp['id']=$row['id'];
@@ -286,8 +288,8 @@ function echoResponse($status_code, $response){
 }
 
 function youtubeID($url){
-     $res = explode("v",$url);
-     if(isset($res[1])) {
+     $res = explode("v",$url); 
+     if(isset($res[1])){
         $res1 = explode('&',$res[1]);
         if(isset($res1[1])){
             $res[1] = $res1[0];
@@ -297,6 +299,9 @@ function youtubeID($url){
             $res[1] = $res1[0];
         }
      }
+	 else{
+		 return $url;
+	 }
      return substr($res[1],1,12);
      return false;
  }

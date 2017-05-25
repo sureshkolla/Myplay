@@ -2,7 +2,7 @@
 var app = angular.module('myplay',['ngStorage']);
 app.controller("DbController",['$scope','$http','$localStorage','$location','$timeout', function($scope,$http,$localStorage,$location,$timeout){
   
-	$scope.loadCategories =function() {  
+	$scope.loadCategories =function() { 
 		$http.get('v1/getcategory').success(function(data){ 
 			$scope.categorydetails = data.allcategories; 
 		}); 
@@ -21,7 +21,7 @@ app.controller("DbController",['$scope','$http','$localStorage','$location','$ti
 	}
 	bootstrap_alert = function () {}
 	bootstrap_alert.warning = function (message, alert, timeout) {
-    $('<div id="floating_alert" class="alert alert-' + alert + ' fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' + message + '&nbsp;&nbsp;</div>').appendTo('body');
+    $('<div id="floating_alert" class="alert alert-' + alert + ' fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>' + message + '&nbsp;&nbsp;</div>').appendTo('body');
    
     $timeout(function () {
     	 $("#floating_alert").hide();
@@ -145,8 +145,8 @@ $scope.liked = function($vid){
 	});
 }
 $scope.favorites = function(){  
-	 var user={};
-	 user.userid=$scope.sessionid;
+	var user={};
+	user.userid=$scope.sessionid;
     $http({  
         url: "v1/favorites",  
         dataType: 'json',  
