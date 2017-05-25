@@ -1,0 +1,525 @@
+
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html ng-app="myplay">
+<head>
+<title>My Play a Entertainment Category Flat Bootstrap Responsive Website Template | News :: w3layouts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+ <title>AngularJS CRUD Operations Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<!-- Include main CSS -->
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<!-- Include jQuery library -->
+<script src="js/jQuery/jquery.min.js"></script>
+<!-- Include AngularJS library -->
+<script src="libs/angular/angular.min.js"></script>
+<!-- Include Bootstrap Javascript -->
+<script src="js/bootstrap.min.js"></script> 
+<link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' media="all" />
+<!-- //bootstrap -->
+<link href="css/dashboard.css" rel="stylesheet">
+<!-- Custom Theme files -->
+<link href="css/style.css" rel='stylesheet' type='text/css' media="all" />
+<script src="js/jquery-1.11.1.min.js"></script>
+
+<!--start-smoth-scrolling-->
+<!-- fonts -->
+<link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+<!-- pop-up-box -->
+<script type="text/javascript" src="js/modernizr.custom.min.js"></script>    
+<link href="css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
+<script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
+<!--//pop-up-box -->
+<!-- //fonts -->
+</head>
+  <body ng-controller="DbController" ng-init="loadVideos('home');loadCategories();"> 
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html"><h1><img src="images/logo.png" alt="" /></h1></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+			<div class="top-search">
+				<form class="navbar-form navbar-right">
+					<input type="text" class="form-control" placeholder="Search...">
+					<input type="submit" value=" ">
+				</form>
+			</div>  
+			<div class="header-top-right">
+				<div class="file uploads">
+					<a ng-if="sessionid!=0"   href="#small-dialog5" class="play-icon popup-with-zoom-anim">Upload</a>
+					<div id="small-dialog5" class="mfp-hide"> 
+						<div class="form-group smyapp"  >
+							<h3>Add Video from Youtube</h3> 
+							 <form name="upoadVideoForm" id="upoadVideoForm" ng-submit="uploadvideo(videoInfo);">
+							  <div class="form-group">
+							    <label for="title">Video Title:</label>
+							    <input type="text" class="form-control" id="title"  ng-model="videoInfo.title">
+							  </div>
+							   <div class="form-group">
+								    <label for="ctegory">Video Category:</label> 
+									<select ng-model="videoInfo.category"  class="form-control"  id="category">
+										<option ng-repeat="x in categorydetails" value="{{x.id}}">{{x.cetegory_name}}</option>
+									</select>
+							   </div>
+							   <div class="form-group">
+							    <label for="url">Youtube URL:</label>
+							   <input type="text" class="form-control" id="url"  ng-model="videoInfo.url">
+							  </div>
+							  
+							   <div class="form-group">
+							    <label for="description">Video Description:</label>
+							   <input type="text" class="form-control" id="description"  ng-model="videoInfo.description">
+							  </div> 
+							  
+							  <br/> 
+							   <div class="form-group">
+							  <button type="submit" class="btn btn-default">Submit</button>
+							  </div>
+							</form>
+						</div>
+						<div class="clearfix"> </div>
+					</div>	
+				</div>	
+				<div class="signups">
+					<a  ng-if="sessionid==0" href="#small-dialog4" class="play-icon popup-with-zoom-anim">Sign Up</a> 
+					<div id="small-dialog4" class="mfp-hide"> 
+						<div class="form-group smyapp"  >
+							<h3>Create Account</h3> 
+							 <form name="createform" id="createForm" ng-submit="createuser(userInfo);">
+							  <div class="form-group">
+							    <label for="fname">First Name:</label>
+							    <input type="text" class="form-control" id="fname"  ng-model="userInfo.fname">
+							  </div>
+							   <div class="form-group">
+							    <label for="lname">Last Name:</label>
+							     <input type="text" class="form-control" id="lname"  ng-model="userInfo.lname">
+							  </div>
+							   <div class="form-group">
+							    <label for="age">Age:</label>
+							    <input type="text" class="form-control" id="age"  ng-model="userInfo.age">
+							  </div>
+							   <div class="form-group">
+							    <label for="email">UserName:</label>
+							    <input type="text" class="form-control" id="username" ng-model="userInfo.username">
+							  </div>
+							  <div class="form-group">
+							    <label for="password">Password:</label>
+							    <input type="password" class="form-control" id="password" ng-model="userInfo.password">
+							  </div>
+							  <div class="checkbox alignradio">
+							    <label> Gender</label><br/> 
+							    <label> <input type="radio"   ng-model="userInfo.gender" value="male">  Male </label> 
+								<label> <input type="radio"  ng-model="userInfo.gender" value="female">  Female </label>
+								 
+							  </div>
+							  <br/> <br/>
+							  <div class="form-group">
+							  	<button type="submit" class="btn btn-default">Submit</button>
+							  </div>
+							</form>
+						</div>
+						<div class="clearfix"> </div>
+					</div>	 
+					<script>
+						$(document).ready(function() {
+							$('.popup-with-zoom-anim,.popup-youtube').magnificPopup({
+								type: 'inline',
+								fixedContentPos: false,
+								fixedBgPos: true,
+								overflowY: 'auto',
+								closeBtnInside: true,
+								preloader: false,
+								midClick: true,
+								removalDelay: 300,
+								mainClass: 'my-mfp-zoom-in'
+							});																							
+						});
+					</script>	
+				</div>
+				<div class="signin">
+					<a ng-if="!sessionid" href="#small-dialog" class="play-icon popup-with-zoom-anim">Sign In</a>
+					<div id="small-dialog" class="mfp-hide">
+					<div class="form-group myapp"  >
+							<h3>Login</h3> 
+							 <form name="loginform" id="logForm"  ng-submit="login(logInfo);">
+							  <div class="form-group">
+							    <label for="email">Email address:</label>
+							    <input type="text" class="form-control"  ng-model="logInfo.username">
+							  </div>
+							  <div class="form-group">
+							    <label for="pwd">Password:</label>
+							    <input type="password" class="form-control" ng-model="logInfo.password">
+							  </div>
+							  <div class="checkbox">
+							    <label><input type="checkbox"> Remember me</label>
+							  </div>
+							  <button type="submit" class="btn btn-default">Submit</button>
+							</form>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+        </div>
+		<div class="clearfix"> </div>
+      </div>
+    </nav> 
+        <div class="col-sm-3 col-md-2 sidebar">
+			<div class="top-navigation">
+				<div class="t-menu">MENU</div>
+				<div class="t-img">
+					<img src="images/lines.png" alt="" />
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+				<div class="drop-navigation drop-navigation">
+				  <ul class="nav nav-sidebar">
+					<li  class="active"><a href="index.html"  class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>	
+					<li><a href="javascript:void(0)" ng-click="favorites()" class="sub-icon"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>My favorites</a></li>		 
+					<li><a href="javascript:void(0)" ng-click="myVideos()" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-hourglass" aria-hidden="true"></span>My Videos</a></li>
+					<li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>Category<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
+						<ul class="cl-effect-2">
+							<li ng-repeat="detail in categorydetails"><a href="javascript:void(0)" ng-click="loadVideos(detail.id,detail.cetegory_name)" >{{detail.cetegory_name}}</a></li>  
+						</ul>
+						<!-- script-for-menu -->
+						<script>
+							$( "li a.menu1" ).click(function() {
+							$( "ul.cl-effect-2" ).slideToggle( 300, function() {
+								// Animation complete.
+							});
+							});
+						</script>  
+						
+						<li ng-if="sessionid!=0" class="logout"><a  href="#/logout"  ng-click="logout()"  class="sub-icon"><span class="glyphicon glyphicon-film glyphicon-king" aria-hidden="true"></span>Log Out</a></li>
+					 </ul> 
+				  <!-- script-for-menu -->
+					<script>
+						$( ".top-navigation" ).click(function() {
+						$( ".drop-navigation" ).slideToggle( 300, function() {
+						// Animation complete.
+						});
+						});
+					</script> 
+				</div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="main-grids">
+				<div class="recommended">
+					<div class="recommended-grids english-grid"  >
+						<div class="recommended-info">
+							<div class="heading">
+								<h3>{{categorytype}} Videos</h3>
+							</div> 
+							<div class="clearfix"> </div>
+						</div> 
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid"   ng-repeat="vdetail in videodetails">
+							
+							<div class="resent-grid-img recommended-grid-img"> 
+								<a href="#" class="btn btn-default"  ng-click="fireEvent($event)" data-toggle="modal" data-target="#videoModal" data-theVideo="{{vdetail.url}}"><img src="https://img.youtube.com/vi/{{vdetail.url}}/1.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>7:30</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="javascript:void(0)" class="title">Nullam interdum metus {{vdetail.title}}</a></h5>
+								<p class="author"><a  href="javascript:void(0)" class="author">John Maniy {{vdetail.owner}}</a>
+									<a href="javascript:void(0)" ng-click="liked(vdetail.id)"  class="likes" ><span ng-class="glyphicon-thumbs-up : vdetail.id === vdetail.owner"  class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></a>
+								</p> 
+								<!-- <p class="views">2,114,200 views</p>  -->
+							</div> 
+						</div> 
+						<p ng-if="videodetails.length==0" class="center lead">
+						    Nothing was found!!!
+						</p> 
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+				<div class="recommended">
+					<div class="recommended-grids">
+						<div class="recommended-info">
+							<div class="heading">
+								<h3>Recently Viewed</h3>
+							</div> 
+							<div class="clearfix"> </div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/n1.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>7:30</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/n2.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>9:34</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/n3.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>5:34</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/n4.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>6:55</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/n5.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>8:04</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/n6.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>7:34</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+				<div class="recommended">
+					<div class="recommended-grids">
+						<div class="recommended-info">
+							<div class="heading">
+								<h3>Popular Videos</h3>
+							</div> 
+							<div class="clearfix"> </div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/sp4.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>7:30</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/g2.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>9:34</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/sp1.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>5:34</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/sp6.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>6:55</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/g3.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>8:04</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid">
+							<div class="resent-grid-img recommended-grid-img">
+								<a href="single.html"><img src="images/sp2.jpg" alt="" /></a>
+								<div class="time small-time sports-tome">
+									<p>7:34</p>
+								</div>
+								<div class="clck sports-clock">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h5><a href="single.html" class="title">Nullam interdum metus varius sit sed viverra</a></h5>
+								<p class="author"><a href="#" class="author">John Maniya</a></p>
+								<p class="views">2,114,200 views</p>
+							</div>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+			</div>
+			<!-- footer -->
+			<div class="footer">
+				<div class="footer-grids">
+					<div class="footer-top1">
+						<div class="footer-top-nav">
+							<ul>
+								<li><a href="about.html">About</a></li>
+								<li><a href="press.html">Press</a></li>
+								<li><a href="copyright.html">Copyright</a></li>
+								<li><a href="creators.html">Creators</a></li>
+								<li><a href="#">Advertise</a></li>
+								<li><a href="developers.html">Developers</a></li>
+							</ul>
+						</div>
+						<div class="footer-bottom-nav">
+							<ul>
+								<li><a href="terms.html">Terms</a></li>
+								<li><a href="privacy.html">Privacy</a></li>
+								<li><a href="#small-dialog4" class="play-icon popup-with-zoom-anim">Send feedback</a></li>
+								<li><a href="privacy.html">Policy & Safety </a></li>
+								<li><a href="try.html">Try something new!</a></li>
+							</ul>
+						</div>
+					</div> 
+				</div>
+			</div>
+			<!-- //footer -->
+		</div>
+		<div class="clearfix"> </div>
+		<div class="drop-menu">
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu4">
+			  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Regular link</a></li>
+			  <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">Disabled link</a></li>
+			  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another link</a></li>
+			</ul>
+		</div> 
+		<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-body">
+		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <div>
+		                      <iframe width="100%" height="350" src="" frameborder="0" allowfullscreen></iframe>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+  </body>
+  	<!-- Include controller -->
+	
+	<script src="js/ngStorage.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script> -->
+	<script src="js/app.js"></script>	 
+</html>
