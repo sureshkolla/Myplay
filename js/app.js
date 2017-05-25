@@ -20,24 +20,40 @@ app.controller("DbController",['$scope','$http','$localStorage','$location','$ti
 	    });
 	}
 	bootstrap_alert = function () {}
-	bootstrap_alert.warning = function (message, alert, timeout) {
-    $('<div id="floating_alert" class="alert alert-' + alert + ' fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>' + message + '&nbsp;&nbsp;</div>').appendTo('body');
+	bootstrap_alert.warning = function (message, alertclass, timeout) {
+    $('<div id="floating_alert" class="alert alert-' + alertclass + ' fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>' + message + '&nbsp;&nbsp;</div>').appendTo('body');
    
     $timeout(function () {
     	 $("#floating_alert").hide();
     }, timeout);    
 }
-$scope.sessionid=($localStorage.userId !=undefined)? $localStorage.userId :0;  
-$scope.loadVideos =function($id,$name='All'){ 
+$scope.sessionid=($localStorage.userId !=undefined)? $localStorage.userId :0; 
+
+$scope.loadVideos =function($id,$name='All'){  
 	$scope.categorytype=$name;
+	 $scope.activetab='';
+	if($id=="home")
+	$scope.activetab="home"; 	 
+	$scope.catid=$id;
  	$http.get('v1/loadvideos/'+$id).success(function(data){
  		 $scope.videodetails = data.assignments;
  		autoPlayYouTubeModal();
  	}); 
 };
 
+
+$scope.search =function(info){  
+	$scope.categorytype="Search ";
+	$scope.activetab='';
+	$scope.activetab="Search"; 	 
+ 	$http.get('v1/search/'+info.search).success(function(data){
+ 		$scope.videodetails = data.assignments;
+ 		autoPlayYouTubeModal();
+ 	}); 
+};
 $scope.myVideos =function(){ 	
 	$id=$scope.sessionid; 
+	$scope.activetab="myVideos"; 
 	$http({  
       url: 'v1/myvideos/'+$id,  
       headers: {
@@ -134,19 +150,23 @@ $scope.liked = function($vid){
 	   	  'Authorization': $localStorage.Authorization
      	} 
       }).success(function(data){
-   	 if(!data.error){
+		  
+		if(!data.error){
    		 	 bootstrap_alert.warning(data.message, 'success', 4000);
    		 	$("a.likes span").removeClass('glyphicon-thumbs-down');
  	   }else{ 
  		   bootstrap_alert.warning(data.message, 'danger', 4000);
  	   }
 	}).error(function(data){
-		 bootstrap_alert.warning(data.message, 'danger', 4000);
+		 $(".signin a").click();
+			bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 
 	});
 }
 $scope.favorites = function(){  
 	var user={};
 	user.userid=$scope.sessionid;
+	$scope.activetab="favorites"; 
+	$scope.categorytype="Favorite";
     $http({  
         url: "v1/favorites",  
         dataType: 'json',  

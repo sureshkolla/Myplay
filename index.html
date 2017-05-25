@@ -54,9 +54,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
         <div id="navbar" class="navbar-collapse collapse">
 			<div class="top-search">
-				<form class="navbar-form navbar-right">
-					<input type="text" class="form-control" placeholder="Search...">
-					<input type="submit" value=" ">
+				<form class="navbar-form navbar-right" ng-submit="search(info)">
+					<input type="text" class="form-control"  ng-model="info.search" placeholder="Search...">
+					<input type="submit" value="" >
 				</form>
 			</div>  
 			<div class="header-top-right">
@@ -190,12 +190,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 				<div class="drop-navigation drop-navigation">
 				  <ul class="nav nav-sidebar">
-					<li  class="active"><a href="index.html"  class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>	
-					<li><a href="javascript:void(0)" ng-click="favorites()" class="sub-icon"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>My favorites</a></li>		 
-					<li><a href="javascript:void(0)" ng-click="myVideos()" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-hourglass" aria-hidden="true"></span>My Videos</a></li>
+					<li ng-class="{'active': activetab == 'home'}"><a href="javascript:void(0)"  ng-click="loadVideos('home');" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>	
+					<li ng-class="{'active': activetab == 'favorites' }" ><a href="javascript:void(0)" ng-click="favorites()" class="sub-icon"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>My favorites </a></li>		 
+					<li ng-class="{'active': activetab == 'myVideos' }"><a href="javascript:void(0)" ng-click="myVideos()" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-hourglass" aria-hidden="true"></span>My Videos</a></li>
 					<li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>Category<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
 						<ul class="cl-effect-2">
-							<li ng-repeat="detail in categorydetails"><a href="javascript:void(0)" ng-click="loadVideos(detail.id,detail.cetegory_name)" >{{detail.cetegory_name}}</a></li>  
+							<li  ng-repeat="detail in categorydetails"><a ng-class="{'active': catid==detail.id}" href="javascript:void(0)" ng-click="loadVideos(detail.id,detail.cetegory_name)" >{{detail.cetegory_name}} </a></li>  
 						</ul>
 						<!-- script-for-menu -->
 						<script>

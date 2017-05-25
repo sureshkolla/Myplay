@@ -147,6 +147,10 @@ ul.nav.nav-sidebar li a{
     font-weight: 600;
     padding: .8em 0 .8em 3em;
 }
+ul.nav.nav-sidebar li a.active{
+	 color: #21DEEF;
+
+}
 .main-grids {
   padding: 0 0 1em 1em;
 }

@@ -53,7 +53,11 @@ $app->post('/liked','authenticateUser', function () use ($app) {
         $response["error"] = true;
         $response["message"] = "Oops! An error occurred while addining to playlist";
         echoResponse(200, $response);
-    } 
+    }  else if ($res == 2) {
+        $response["error"] = true;
+        $response["message"] = "Sorry, this video you liked";
+        echoResponse(200, $response);
+    }
 });
  
 $app->post('/favorites','authenticateUser', function () use ($app) { 
@@ -65,8 +69,7 @@ $app->post('/favorites','authenticateUser', function () use ($app) {
     $resultset = array(); 
     foreach($res as $data) {
     $resultset[] = $data['videoid']; 
-    }
-    
+    }  
 	 
     $result = $db->myFavoriteVideos($resultset);
     $response = array();
@@ -74,7 +77,7 @@ $app->post('/favorites','authenticateUser', function () use ($app) {
     $response['assignments'] = array();
     while($row = $result->fetch_assoc()){
         $temp = array();
-        $temp['id1']=$row['id'];
+        $temp['id']=$row['id'];
         $temp['title'] = $row['title'];
         $temp['category'] = $row['category'];
         $temp['url'] = $row['url'];
@@ -105,6 +108,26 @@ $app->get('/loadvideos/:id', function($vid) use ($app){
         $temp['status'] = $row['status'];          
         //$temp['faculty']= $db->getFacultyName($row['faculties_id']);
          array_push($response['assignments'],$temp);
+    }
+    echoResponse(200,$response);
+});
+$app->get('/search/:id', function($search) use ($app){
+    $db = new DbOperation();
+    $result = $db->getSearch($search);
+    $response = array();
+    $response['error'] = false;
+    $response['assignments'] = array();
+    while($row = $result->fetch_assoc()){
+        $temp = array();
+        $temp['id']=$row['id'];
+        $temp['title'] = $row['title'];
+        $temp['category'] = $row['category'];
+        $temp['url'] = $row['url'];
+        $temp['description'] = $row['description'];
+        $temp['owner'] = $row['owner'];
+        $temp['createdon'] = $row['createdon'];
+        $temp['status'] = $row['status'];          
+        array_push($response['assignments'],$temp);
     }
     echoResponse(200,$response);
 });

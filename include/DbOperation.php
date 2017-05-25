@@ -31,7 +31,7 @@ class DbOperation
         }
     }
 	public function palyList($videoid,$userid){
-       // if (!$this->isVideoExists($url)) {
+       if (!$this->isLiked($videoid,$userid)) {
             $cdate=date("Y/m/d h:m:s");
             $apikey = $this->generateApiKey();
             $stmt = $this->con->prepare("INSERT INTO userplaylist(userid,videoid,createdon,status) values(?, ?, ?, ?)");           
@@ -44,9 +44,9 @@ class DbOperation
             } else {
                 return 1;
             }
-       // } else {
-       //     return 2;
-       // }
+        } else {
+            return 2;
+        }
     }
     public function createUser($fname,$lname,$age, $username, $password,$gender){
         if (!$this->isUserExists($username)) {
@@ -129,6 +129,15 @@ class DbOperation
         $stmt->close();
         return $assignments;
     }
+	
+	public function getSearch($search){
+		$stmt = $this->con->prepare("SELECT * FROM uploadvideo  WHERE title like '$search%' or description like '$search%'");
+		//$stmt->bind_param("i",$vid);    	
+        $stmt->execute();
+        $assignments = $stmt->get_result();
+        $stmt->close();
+        return $assignments;
+    }
  	public function myVideos($id){ 
        $stmt = $this->con->prepare("SELECT * FROM uploadvideo WHERE owner=?");
     	$stmt->bind_param("i",$id); 
@@ -202,6 +211,15 @@ class DbOperation
 	 private function isVideoExists($url) {
         $stmt = $this->con->prepare("SELECT id from uploadvideo WHERE url = ?");
         $stmt->bind_param("s", $url);
+        $stmt->execute();
+        $stmt->store_result();
+        $num_rows = $stmt->num_rows;
+        $stmt->close();
+        return $num_rows > 0;
+    } 
+	private function isLiked($videoid,$userid) {
+        $stmt = $this->con->prepare("SELECT * from userplaylist WHERE videoid = ? and userid=?");
+        $stmt->bind_param("ii",$videoid,$userid);
         $stmt->execute();
         $stmt->store_result();
         $num_rows = $stmt->num_rows;
