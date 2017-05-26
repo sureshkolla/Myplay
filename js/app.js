@@ -43,13 +43,15 @@ $scope.loadVideos =function($id,$name='All'){
 
 
 $scope.search =function(info){  
-	$scope.categorytype="Search ";
-	$scope.activetab='';
-	$scope.activetab="Search"; 	 
- 	$http.get('v1/search/'+info.search).success(function(data){
- 		$scope.videodetails = data.assignments;
- 		autoPlayYouTubeModal();
- 	}); 
+	if($.trim(info.search)!=""){
+	 	$http.get('v1/search/'+info.search).success(function(data){
+	 		$scope.categorytype="Search ";
+	 		$scope.activetab='';
+	 		$scope.activetab="Search";
+	 		$scope.videodetails = data.assignments;
+	 		autoPlayYouTubeModal();
+	 	}); 
+	}
 };
 $scope.myVideos =function(){ 	
 	$id=$scope.sessionid; 
@@ -185,6 +187,7 @@ $scope.favorites = function(){
 		 bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 		
 	});
 }
+ 
 $scope.logout = function(){     
 	$localStorage.$reset(); 
 	window.location.reload();
@@ -197,16 +200,45 @@ $scope.deleteInfo = function(info){
 	});
 }
  
+
 $scope.UpdateInfo = function(info){
 	$http.post('databaseFiles/updateDetails.php',{"id":info.emp_id,"name":info.emp_name,"email":info.emp_email,"address":info.emp_address,"gender":info.emp_gender}).success(function(data){
-		$scope.show_form = true;
-			if (data == true) {
-				getInfo();
-			}
-		});
-	}
- 
+	$scope.show_form = true;
+		if (data == true) {
+			getInfo();
+		}
+	});
+}
+// $scope.searchitems = function(searchvalue) {	 
+//	//return $http.jsonp("http://gd.geobytes.com/AutoCompleteCity?callback=JSON_CALLBACK &filter=US&q="+searchvalue).then(function(response){
+// 	  $http.jsonp("v1/autosearch/"+searchvalue).then(function(response){			 
+//			return limitToFilter(response, 15);
+//    });
+//  };
 }]);
+app.factory('autoCompleteDataService', [function() {
+	return {
+	    getSource: function() {
+	        //this is where you'd set up your source... could be an external source, I suppose. 'something.php'
+	        return ['apples', 'oranges', 'bananas'];
+	    }
+	}
+}]);
+app.directive('autoComplete', function(autoCompleteDataService) {
+	return {
+	    restrict: 'A',
+	    link: function(scope, elem, attr, ctrl) {
+	                // elem is a jquery lite object if jquery is not present,
+	                // but with jquery and jquery ui, it will be a full jquery object.
+	        debugger
+	        elem.autocomplete({
+	            source: autoCompleteDataService.getSource(), //from your service
+	            minLength: 2
+	        });
+	    }
+	};
+	});
+	 
 app.controller('LogoutController',function($location, $scope, $window){
     $window.localStorage.clear();
     $location.path('/');

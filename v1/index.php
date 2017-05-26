@@ -55,7 +55,7 @@ $app->post('/liked','authenticateUser', function () use ($app) {
         echoResponse(200, $response);
     }  else if ($res == 2) {
         $response["error"] = true;
-        $response["message"] = "Sorry, this video you liked";
+        $response["message"] = "This video you already liked";
         echoResponse(200, $response);
     }
 });
@@ -112,7 +112,8 @@ $app->get('/loadvideos/:id', function($vid) use ($app){
     echoResponse(200,$response);
 });
 $app->get('/search/:id', function($search) use ($app){
-    $db = new DbOperation();
+    $db = new DbOperation(); 
+    $search=utf8_decode(urldecode($search));  
     $result = $db->getSearch($search);
     $response = array();
     $response['error'] = false;
@@ -130,6 +131,25 @@ $app->get('/search/:id', function($search) use ($app){
         array_push($response['assignments'],$temp);
     }
     echoResponse(200,$response);
+});
+$app->get('/autosearch/:id', function($inputvalue) use ($app){
+    $db = new DbOperation(); 
+    $inputvalue=utf8_decode(urldecode($inputvalue));  
+    $result = $db->autoSearch($inputvalue);
+    $response = array(); 
+    $temp = array();  
+    while($row = $result->fetch_assoc()){ 
+        $temp['title'] = $row['title'];
+        $temp['description'] = $row['description']; 
+        array_push( $response,$temp);
+    }   
+    $response1=returnResponse(200,$response);
+    $implode = array();
+	$multiple = json_decode($response1, true);
+	foreach($multiple as $single)
+    $implode[] = implode('", "', $single); 
+	echo '["'.implode('", "', $implode).'"]';   //this will output abaneel, 23, john, 32, Dev, 22
+ 
 });
 $app->get('/myvideos/:id','authenticateUser', function($id) use ($app){
     $db = new DbOperation();
@@ -309,6 +329,13 @@ function echoResponse($status_code, $response){
     $app->contentType('application/json');
     echo json_encode($response);
 }
+function returnResponse($status_code, $response){
+    $app = \Slim\Slim::getInstance();
+    $app->status($status_code);
+    $app->contentType('application/json');
+    return  json_encode($response);
+}
+
 
 function youtubeID($url){
      $res = explode("v",$url); 

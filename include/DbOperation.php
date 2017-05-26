@@ -129,13 +129,21 @@ class DbOperation
         $stmt->close();
         return $assignments;
     }
-	
+	 
 	public function getSearch($search){
 		$stmt = $this->con->prepare("SELECT * FROM uploadvideo  WHERE title like '$search%' or description like '$search%'");
 		//$stmt->bind_param("i",$vid);    	
         $stmt->execute();
         $assignments = $stmt->get_result();
         $stmt->close();
+        return $assignments;
+    }
+	public function autoSearch($inputvalue){
+		$stmt = $this->con->prepare("SELECT title,description FROM uploadvideo  WHERE title like '$inputvalue%' or description like '$inputvalue%'");
+		//$stmt->bind_param("i",$vid);    	
+        $stmt->execute();
+        $assignments = $stmt->get_result();
+        $stmt->close(); 
         return $assignments;
     }
  	public function myVideos($id){ 

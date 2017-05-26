@@ -37,6 +37,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <script type="text/javascript" src="js/modernizr.custom.min.js"></script>    
 <link href="css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
 <script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <!--//pop-up-box -->
 <!-- //fonts -->
 </head>
@@ -55,7 +56,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div id="navbar" class="navbar-collapse collapse">
 			<div class="top-search">
 				<form class="navbar-form navbar-right" ng-submit="search(info)">
-					<input type="text" class="form-control"  ng-model="info.search" placeholder="Search...">
+					 
+					
+ <input type="text" ng-model="foo" auto-complete/>
+                  Foo = {{foo}}
 					<input type="submit" value="" >
 				</form>
 			</div>  
@@ -505,7 +509,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</ul>
 		</div> 
 		<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal" aria-hidden="true">
-		    <div class="modal-dialog">
 		        <div class="modal-content">
 		            <div class="modal-body">
 		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -517,9 +520,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		    </div>
 		</div>
   </body>
-  	<!-- Include controller -->
-	
-	<script src="js/ngStorage.min.js"></script>
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script> -->
-	<script src="js/app.js"></script>	 
+  	<!-- Include controller --> 
+	<script src="js/ngStorage.min.js"></script> 
+	<script src="js/app.js"></script> 
 </html>
