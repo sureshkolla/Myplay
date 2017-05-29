@@ -59,16 +59,36 @@ $app->post('/liked','authenticateUser', function () use ($app) {
         echoResponse(200, $response);
     }
 });
- 
-$app->post('/favorites','authenticateUser', function () use ($app) { 
-    verifyRequiredParams(array('userid'));
-    $response = array(); 
-    $userid = $app->request->post('userid'); 
+ $app->get('/myvideos/:id','authenticateUser', function($id) use ($app){
+    $db = new DbOperation();
+    $result = $db->myVideos($id);
+    $response = array();
+    $response['error'] = false;
+    $response['assignments'] = array();
+    while($row = $result->fetch_assoc()){
+        $temp = array();
+        $temp['id']=$row['id'];
+        $temp['title'] = $row['title'];
+        $temp['category'] = $row['category'];
+        $temp['url'] = $row['url'];
+        $temp['description'] = $row['description'];
+        $temp['owner'] = $row['owner'];
+        $temp['createdon'] = $row['createdon'];
+        $temp['status'] = $row['status'];          
+        //$temp['faculty']= $db->getFacultyName($row['faculties_id']);
+         array_push($response['assignments'],$temp);
+    }
+    echoResponse(200,$response);
+});
+$app->get('/favorites/:id','authenticateUser', function ($id) use ($app) { 
+   //verifyRequiredParams(array('userid'));
+   $response = array(); 
+   // $userid = $app->request->post('userid'); 
     $db = new DbOperation();  
-    $res = $db->likeVideoIds($userid); 
+    $res = $db->likeVideoIds($id); 
     $resultset = array(); 
     foreach($res as $data) {
-    $resultset[] = $data['videoid']; 
+		$resultset[] = $data['videoid']; 
     }  
 	 
     $result = $db->myFavoriteVideos($resultset);
@@ -90,9 +110,9 @@ $app->post('/favorites','authenticateUser', function () use ($app) {
     }
     echoResponse(200,$response);
 });
-$app->get('/loadvideos/:id', function($vid) use ($app){
+$app->get('/loadvideos/:id', function($catid) use ($app){
     $db = new DbOperation();
-    $result = $db->getVideos($vid);
+    $result = $db->getVideos($catid);
     $response = array();
     $response['error'] = false;
     $response['assignments'] = array();
@@ -151,27 +171,7 @@ $app->get('/autosearch/:id', function($inputvalue) use ($app){
 	echo '["'.implode('", "', $implode).'"]';   //this will output abaneel, 23, john, 32, Dev, 22
  
 });
-$app->get('/myvideos/:id','authenticateUser', function($id) use ($app){
-    $db = new DbOperation();
-    $result = $db->myVideos($id);
-    $response = array();
-    $response['error'] = false;
-    $response['assignments'] = array();
-    while($row = $result->fetch_assoc()){
-        $temp = array();
-        $temp['id']=$row['id'];
-        $temp['title'] = $row['title'];
-        $temp['category'] = $row['category'];
-        $temp['url'] = $row['url'];
-        $temp['description'] = $row['description'];
-        $temp['owner'] = $row['owner'];
-        $temp['createdon'] = $row['createdon'];
-        $temp['status'] = $row['status'];          
-        //$temp['faculty']= $db->getFacultyName($row['faculties_id']);
-         array_push($response['assignments'],$temp);
-    }
-    echoResponse(200,$response);
-});
+
 $app->get('/getcategory', function() use ($app){
     $db = new DbOperation();
     $result = $db->getCategory();

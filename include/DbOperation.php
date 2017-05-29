@@ -116,13 +116,13 @@ class DbOperation
         $stmt->close();
         return $assignments;
     }
-//Method to get all the assignments of a particular student
-    public function getVideos($vid){
-    	if($vid == 'home'){
+	//Method to get all the assignments of a particular student
+    public function getVideos($catid){
+    	if($catid == 'all'){
         	$stmt = $this->con->prepare("SELECT * FROM uploadvideo");
     	}else{
     		 $stmt = $this->con->prepare("SELECT * FROM uploadvideo WHERE category=?");
-    		 $stmt->bind_param("i",$vid);
+    		 $stmt->bind_param("i",$catid);
     	} 
         $stmt->execute();
         $assignments = $stmt->get_result();
