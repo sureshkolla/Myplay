@@ -168,7 +168,13 @@ $app->get('/autosearch/:id', function($inputvalue) use ($app){
 	$multiple = json_decode($response1, true);
 	foreach($multiple as $single)
     $implode[] = implode('", "', $single); 
-	echo '["'.implode('", "', $implode).'"]';   //this will output abaneel, 23, john, 32, Dev, 22
+	$jsonstring= '["'.implode('", "', $implode).'"]';   //this will output abaneel, 23, john, 32, Dev, 22
+	
+	$array = json_decode( $jsonstring, TRUE ); 
+	$array = array_values( array_unique( $array, SORT_REGULAR ) );
+
+	// Make a JSON string from the array.
+	echo json_encode( $array ); 
  
 });
 
