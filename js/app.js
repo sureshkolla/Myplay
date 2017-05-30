@@ -37,6 +37,7 @@ app.controller("DbController",['$scope','$http','$localStorage','$location','$ti
 	}
 	bootstrap_alert = function () {}
 	bootstrap_alert.warning = function (message, alertclass, timeout) {
+	$("#floating_alert").remove();
     $('<div id="floating_alert" class="alert alert-' + alertclass + ' fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>' + message + '&nbsp;&nbsp;</div>').appendTo('body');
    
     $timeout(function () {
@@ -106,29 +107,69 @@ $scope.fireEvent=function($event) {
  	}).error(function(data){ 
  		  bootstrap_alert.warning(data.message, 'danger', 4000);
  	});
-}
-
-$scope.uploadvideo = function(userInfo){    
-	 userInfo.owner=$scope.sessionid; 
-      $http({  
-          url: "v1/createvideo",  
+} 
+ $scope.clearform=function(videoInfo){  
+		 $scope.videoInfo.id=''; 
+		 $scope.videoInfo.title='';
+		 $scope.videoInfo.category='';
+		 $scope.videoInfo.url='';
+		 $scope.videoInfo.description='';		 
+ }
+$scope.uploadvideo = function(videoInfo){  
+	videoInfo.owner=$scope.sessionid;  
+	if(videoInfo.id !=undefined && !(videoInfo.id==isNaN(videoInfo.id))){
+		var apiurl="v1/updatevideo";  
+	}
+	else { 
+		var apiurl="v1/createvideo"; 
+	}
+	 
+    $http({  
+          url: apiurl,  
           dataType: 'json',  
           method: 'POST',  
-          data: $.param(userInfo),
+          data: $.param(videoInfo),
           headers: {
     	  'Content-Type': 'application/x-www-form-urlencoded',
     	  'Authorization': $localStorage.Authorization
       	} 
        }).success(function(data){
     	 if(!data.error){
-    		 	 bootstrap_alert.warning(data.message, 'success', 4000);
-		    	 $.magnificPopup.close();
+    		 bootstrap_alert.warning(data.message, 'success', 4000);
+		     $.magnificPopup.close();
   	   }else{ 
   		   bootstrap_alert.warning(data.message, 'danger', 4000);
   	   }
  	}).error(function(data){
  		 bootstrap_alert.warning(data.message, 'danger', 4000);
  	});
+}
+$scope.editvideo = function ($vid) {  
+	 var user={};
+	 user.userid=$scope.sessionid; 
+	 user.videoid=$vid;
+ 	 $http({  
+       url: "v1/editvideo/"+$vid,   
+       headers: {
+	   	  'Content-Type': 'application/x-www-form-urlencoded',
+	   	  'Authorization': $localStorage.Authorization
+   	} 
+    }).success(function(data){		  
+		if(!data.error){ 
+ 		 	$scope.videoInfo=data;   		 	
+ 		 	$.magnificPopup.open({
+ 		 	  items: {
+ 		 	      src: '#small-dialog5',
+ 		 	      type: 'inline'
+ 		 	  }
+ 		 }); 		 	
+	   }else{ 
+		   bootstrap_alert.warning(data.message, 'danger', 4000);
+	   }
+	}).error(function(data){
+		 $(".signin a").click();
+		 bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 
+});  
 }
 $scope.createuser = function(userInfo){   
       $http({  
@@ -171,7 +212,33 @@ $scope.liked = function($vid){
 		 $(".signin a").click();
 			bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 
 	});
+} 
+$scope.deletevideo = function(event,$vid){  
+	 var user={};
+	 user.userid=$scope.sessionid; 
+	 user.videoid=$vid;
+    $http({  
+        url: "v1/deletevideo",  
+        dataType: 'json',  
+        method: 'POST',  
+        data: $.param(user),
+        headers: {
+	   	  'Content-Type': 'application/x-www-form-urlencoded',
+	   	  'Authorization': $localStorage.Authorization
+    	} 
+     }).success(function(data){		  
+		if(!data.error){
+  		 	 bootstrap_alert.warning(data.message, 'success', 4000); 
+  		 	 angular.element(event.target).parents('.parent-template').remove();
+	   }else{ 
+		   bootstrap_alert.warning(data.message, 'danger', 4000);
+	   }
+	}).error(function(data){
+		 $(".signin a").click();
+		 bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 
+	});
 }
+
 $scope.favorites = function(){  
 	$uid=$scope.sessionid;
 	$scope.activetab="Favorite";  
@@ -202,19 +269,19 @@ $scope.deleteInfo = function(info){
 	});
 } 
 $scope.searcharray = {};
-$scope.$watch('info.searchbox', function (val) {
-	$timeout(function() { 
-	    var payload = val; 
-	    $scope.selectedstatus=false;
-	    if( val.length > 2){
-	    	Searchfactory.get(payload, function(data){ 	    		
-	            $scope.searcharray = data;  
-	        });
-	    }else{	    	 
+var timeoutHandle;
+$scope.searching =function(info){   
+	 $timeout.cancel(timeoutHandle);
+	 timeoutHandle =$timeout(function() {  
+	    if(info.searchbox.length > 2){ 
+	    	$http.get("v1/autocomplete/"+info.searchbox).then(function(response	){ 
+	    		$scope.searcharray = response.data;
+            }); 
+	    }else{	  
 	        $scope.searcharray = [];
 	    }
 	},1000);
-});
+} 
 $scope.clicked = function(val){
 	$scope.info.searchbox=val;
 	$timeout(function() { 

@@ -56,8 +56,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div id="navbar" class="navbar-collapse collapse">
 			<div class="top-search">
 				<form class="navbar-form navbar-right" ng-submit="search(info)">					 
-					 <input type="text" ng-model="info.searchbox" class="form-control" placeholder="Search..." />					 
-			         <ul ng-show="searcharray.length > 0"  class="datafromserver">
+					 <input type="text" ng-keyup="searching(info)" ng-model="info.searchbox" class="form-control" placeholder="Search..." />
+				 	    <ul ng-show="searcharray.length > 0"  class="datafromserver">
 			             <li  ng-repeat="item in searcharray" ng-click=clicked(item)>{{ item }}</li>
 			         </ul> 
 					<input type="submit" value="" >
@@ -79,7 +79,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
    						 	    line-height: 22px;
 							    font-size: 14px;
 							    padding: 5px;
-							     border:1px solid #fff;
+							    border:1px solid #fff;
    						 }
    						  .datafromserver li:hover{
    						 	color: #444;
@@ -91,25 +91,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>  
 			<div class="header-top-right">
 				<div class="file uploads">
-					<a ng-if="sessionid!=0"   href="#small-dialog5" class="play-icon popup-with-zoom-anim">Upload</a>
+					<a ng-if="sessionid!=0" href="#small-dialog5" ng-click="clearform(videoInfo)" class="play-icon popup-with-zoom-anim">Upload</a>
 					<div id="small-dialog5" class="mfp-hide"> 
 						<div class="form-group smyapp"  >
 							<h3>Add Video from Youtube</h3> 
 							 <form name="upoadVideoForm" id="upoadVideoForm" ng-submit="uploadvideo(videoInfo);">
 							  <div class="form-group">
 							    <label for="title">Video Title:</label>
-							    <input type="text" class="form-control" id="title"  ng-model="videoInfo.title">
+							    <input type="text" class="form-control" id="title" ng-model="videoInfo.title">
 							  </div>
 							   <div class="form-group">
 								    <label for="ctegory">Video Category:</label> 
+								    
 									<select ng-model="videoInfo.category"  class="form-control"  id="category">
-										<option ng-repeat="x in categorydetails" value="{{x.id}}">{{x.cetegory_name}}</option>
+										<option   ng-repeat="x in categorydetails" value="{{x.id}}">{{x.cetegory_name}}</option>
 									</select>
 							   </div>
 							   <div class="form-group">
 							    <label for="url">Youtube URL:</label>
-							   <input type="text" class="form-control" id="url"  ng-model="videoInfo.url">
-							  </div>
+							  		 <input type="text" class="form-control" id="url"  ng-model="videoInfo.url">
+							 	 </div>
 							  
 							   <div class="form-group">
 							    <label for="description">Video Description:</label>
@@ -117,8 +118,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							  </div> 
 							  
 							  <br/> 
-							   <div class="form-group">
-							  <button type="submit" class="btn btn-default">Submit</button>
+							  <div class="form-group" > 
+							  	  <input type="hidden"  value="{{videoInfo.id}}" ng-model="videoInfo.id"   />
+							 	 <button type="submit" class="btn btn-default">Submit</button>
 							  </div>
 							</form>
 						</div>
@@ -168,15 +170,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<script>
 						$(document).ready(function() {
 							$('.popup-with-zoom-anim,.popup-youtube').magnificPopup({
-								type: 'inline',
-								fixedContentPos: false,
+								type: 'inline'
+								/*fixedContentPos: false,
 								fixedBgPos: true,
 								overflowY: 'auto',
 								closeBtnInside: true,
 								preloader: false,
 								midClick: true,
 								removalDelay: 300,
-								mainClass: 'my-mfp-zoom-in'
+								mainClass: 'my-mfp-zoom-in'*/
 							});																							
 						});
 					</script>	
@@ -219,7 +221,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<div class="clearfix"> </div>
 			</div>
 				<div class="drop-navigation drop-navigation">
-				  <ul class="nav nav-sidebar">{{activetab}}
+				  <ul class="nav nav-sidebar">
 					<li ng-class="{'active': activetab == 'all'}"><a href="javascript:void(0)"  ng-click="loadVideos('all');" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>	
 					<li ng-class="{'active': activetab == 'Favorite' }" ><a href="javascript:void(0)" ng-click="favorites()" class="sub-icon"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>My favorites </a></li>		 
 					<li ng-class="{'active': activetab == 'My' }"><a href="javascript:void(0)" ng-click="myVideos()" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-hourglass" aria-hidden="true"></span>My Videos</a></li>
@@ -257,25 +259,32 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								<h3>{{activetab}} Videos</h3>
 							</div> 
 							<div class="clearfix"> </div>
-						</div> 
-						<div class="col-md-2 resent-grid recommended-grid sports-recommended-grid"   ng-repeat="vdetail in videodetails">
+						</div>  
+						<div class="col-md-2 parent-template resent-grid recommended-grid sports-recommended-grid" ng-repeat="vdetail in videodetails">							 
+							 
+								<div class="resent-grid-img recommended-grid-img"> 
+									<a href="#" class="btn btn-default"  ng-click="fireEvent($event)" data-toggle="modal" data-target="#videoModal" data-theVideo="{{vdetail.url}}"><img src="https://img.youtube.com/vi/{{vdetail.url}}/1.jpg" alt="" /></a>
+									<div class="time small-time sports-tome">
+										<p>7:30</p>
+									</div>
+									<div class="clck sports-clock">
+										<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+									</div>
+								</div>
+								<div class="resent-grid-info recommended-grid-info">
+									<h5><a href="javascript:void(0)" class="title">Nullam interdum metus {{vdetail.title}}</a></h5>
+									
+									<p class="author" style="margin-top:0px;">
+										<a  href="javascript:void(0)" class="author">John Maniy {{vdetail.owner}}</a>
+										<a href="javascript:void(0)" ng-click="liked(vdetail.id)"  class="likes" ><span ng-class1="glyphicon-thumbs-up : vdetail.id === vdetail.owner"  class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></a>
+									</p>  
+								 	<p ng-if="activetab == 'My'" class="views" style="text-align: right;">
+										<a href="javascript:void(0)" ng-click="editvideo(vdetail.id)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> &nbsp;|&nbsp;
+										<a href="javascript:void(0)" ng-click="deletevideo($event,vdetail.id)" class="likes"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+									</p>  
+								</div> 
+							 
 							
-							<div class="resent-grid-img recommended-grid-img"> 
-								<a href="#" class="btn btn-default"  ng-click="fireEvent($event)" data-toggle="modal" data-target="#videoModal" data-theVideo="{{vdetail.url}}"><img src="https://img.youtube.com/vi/{{vdetail.url}}/1.jpg" alt="" /></a>
-								<div class="time small-time sports-tome">
-									<p>7:30</p>
-								</div>
-								<div class="clck sports-clock">
-									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-								</div>
-							</div>
-							<div class="resent-grid-info recommended-grid-info">
-								<h5><a href="javascript:void(0)" class="title">Nullam interdum metus {{vdetail.title}}</a></h5>
-								<p class="author"><a  href="javascript:void(0)" class="author">John Maniy {{vdetail.owner}}</a>
-									<a href="javascript:void(0)" ng-click="liked(vdetail.id)"  class="likes" ><span ng-class1="glyphicon-thumbs-up : vdetail.id === vdetail.owner"  class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></a>
-								</p> 
-								<!-- <p class="views">2,114,200 views</p>  -->
-							</div> 
 						</div> 
 						<p ng-if="videodetails.length==0" class="center lead">
 						    Nothing was found!!!

@@ -30,6 +30,24 @@ class DbOperation
             return 2;
         }
     }
+  //Method to register a new student
+ 	public function updateVideo($title,$category,$url,$description,$owner,$vid){ 
+ 		 if (!$this->isVideoExists($url,$vid)) {
+ 		//echo "UPDATE uploadvideo SET title = '".$title."' ,category='".$category."' ,url='".$url."',description='".$description."' WHERE owner=$owner and id=$vid";
+ 	    $stmt = $this->con->prepare("UPDATE uploadvideo SET title = '".$title."' ,category='".$category."' ,url='".$url."',description='".$description."' WHERE owner=$owner and id=$vid"); 	     
+        //$stmt->bind_param("ssssss",$title,$category,$url, $description,$owner,$vid);
+       $result = $stmt->execute(); 
+        $stmt->close();
+  		if ($result) {
+              return 0;
+          } else {
+              return 1;
+          }
+ 		 } else {
+            return 2;
+        }
+    }
+ 
 	public function palyList($videoid,$userid){
        if (!$this->isLiked($videoid,$userid)) {
             $cdate=date("Y/m/d h:m:s");
@@ -47,6 +65,18 @@ class DbOperation
         } else {
             return 2;
         }
+    }
+ 
+	public function deletevideo($videoid,$userid){ 
+            $stmt = $this->con->prepare("DELETE FROM uploadvideo WHERE id = ? and owner=?"); 
+            $stmt->bind_param('ii',$videoid,$userid);
+            $result = $stmt->execute();
+            $stmt->close();
+            if ($result) {
+                return 0;
+            } else {
+                return 1;
+            } 
     }
     public function createUser($fname,$lname,$age, $username, $password,$gender){
         if (!$this->isUserExists($username)) {
@@ -138,7 +168,7 @@ class DbOperation
         $stmt->close();
         return $assignments;
     }
-	public function autoSearch($inputvalue){
+	public function autoComplete($inputvalue){
 		$stmt = $this->con->prepare("SELECT title,description FROM uploadvideo  WHERE title like '$inputvalue%' or description like '$inputvalue%'");
 		//$stmt->bind_param("i",$vid);    	
         $stmt->execute();
@@ -155,8 +185,11 @@ class DbOperation
         return $assignments;
     }
 	public function myFavoriteVideos($ids){ 		
-		$ids = join(', ', $ids); 
-       $stmt = $this->con->prepare("SELECT * FROM uploadvideo WHERE id  IN ($ids)"); 
+		$ids = join(', ', $ids);  
+		if($ids!='')
+       	 $stmt = $this->con->prepare("SELECT * FROM uploadvideo WHERE id  IN ($ids)"); 
+        else
+         $stmt = $this->con->prepare("SELECT * FROM uploadvideo WHERE id=''"); 
         $stmt->execute();
         $assignments = $stmt->get_result();
         $stmt->close();
@@ -164,6 +197,14 @@ class DbOperation
     }
 	public function likeVideoIds($id){ 
        $stmt = $this->con->prepare("SELECT * FROM userplaylist WHERE userid=?");
+    	$stmt->bind_param("i",$id); 
+        $stmt->execute();
+        $assignments = $stmt->get_result();
+        $stmt->close();
+        return $assignments;
+    }
+	public function editVideos($id){ 
+       $stmt = $this->con->prepare("SELECT * FROM uploadvideo WHERE id=?");
     	$stmt->bind_param("i",$id); 
         $stmt->execute();
         $assignments = $stmt->get_result();
@@ -216,8 +257,11 @@ class DbOperation
         $stmt->close();
         return $num_rows > 0;
     }
-	 private function isVideoExists($url) {
+	 private function isVideoExists($url,$vid='') {
+	 	if($vid=='')
         $stmt = $this->con->prepare("SELECT id from uploadvideo WHERE url = ?");
+        else 
+        $stmt = $this->con->prepare("SELECT id from uploadvideo WHERE url = ? and id!=$vid");
         $stmt->bind_param("s", $url);
         $stmt->execute();
         $stmt->store_result();

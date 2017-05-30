@@ -38,6 +38,32 @@ $app->post('/createvideo','authenticateUser', function () use ($app) {
         echoResponse(200, $response);
     }
 });
+$app->post('/updatevideo','authenticateUser', function () use ($app) { 
+    verifyRequiredParams(array('id','title','category','url', 'description','owner'));
+    $response = array(); 
+    $vid = $app->request->post('id');
+    $title = $app->request->post('title');
+    $category = $app->request->post('category');
+    $url = $app->request->post('url');
+    $description = $app->request->post('description'); 
+    $owner = $app->request->post('owner');     
+    $url=youtubeID($url);
+    $db = new DbOperation();
+    $res = $db->updateVideo($title,$category,$url, $description,$owner,$vid);
+    if ($res == 0) {
+        $response["error"] = false;
+        $response["message"] = "You are successfully video updated";
+        echoResponse(201, $response);
+    } else if ($res == 1) {
+        $response["error"] = true;
+        $response["message"] = "Oops! An error occurred while video created";
+        echoResponse(200, $response);
+    }  else if ($res == 2) {
+        $response["error"] = true;
+        $response["message"] = "Sorry, this video already existed";
+        echoResponse(200, $response);
+    } 
+});
 $app->post('/liked','authenticateUser', function () use ($app) { 
     verifyRequiredParams(array('videoid','userid'));
     $response = array();
@@ -59,6 +85,23 @@ $app->post('/liked','authenticateUser', function () use ($app) {
         echoResponse(200, $response);
     }
 });
+$app->post('/deletevideo','authenticateUser', function () use ($app) { 
+    verifyRequiredParams(array('videoid','userid'));
+    $response = array();
+    $videoid = $app->request->post('videoid');
+    $userid = $app->request->post('userid'); 
+    $db = new DbOperation();
+    $res = $db->deletevideo($videoid,$userid);
+    if ($res == 0) {
+        $response["error"] = false;
+        $response["message"] = "You are successfully deleted";
+        echoResponse(201, $response);
+    } else if ($res == 1) {
+        $response["error"] = true;
+        $response["message"] = "Oops! An error occurred while deleting te video";
+        echoResponse(200, $response);
+    }  
+});
  $app->get('/myvideos/:id','authenticateUser', function($id) use ($app){
     $db = new DbOperation();
     $result = $db->myVideos($id);
@@ -79,6 +122,21 @@ $app->post('/liked','authenticateUser', function () use ($app) {
          array_push($response['assignments'],$temp);
     }
     echoResponse(200,$response);
+});
+$app->get('/editvideo/:id','authenticateUser', function ($id) use ($app) {  
+   $response = array(); 
+    $db = new DbOperation();  
+    $res = $db->editVideos($id); 
+    $resultset = array(); 
+    foreach($res as $data) {
+		$resultset['id'] = $data['id'];
+		$resultset['title'] = $data['title']; 
+		$cat=$data['category'];
+		$resultset['category'] = "$cat"; 
+		$resultset['url'] = "https://www.youtube.com/watch?v=".$data['url']; 
+		$resultset['description'] = $data['description']; 
+    }   
+   echoResponse(200,$resultset);
 });
 $app->get('/favorites/:id','authenticateUser', function ($id) use ($app) { 
    //verifyRequiredParams(array('userid'));
@@ -152,10 +210,10 @@ $app->get('/search/:id', function($search) use ($app){
     }
     echoResponse(200,$response);
 });
-$app->get('/autosearch/:id', function($inputvalue) use ($app){
+$app->get('/autocomplete/:id', function($inputvalue) use ($app){
     $db = new DbOperation(); 
     $inputvalue=utf8_decode(urldecode($inputvalue));  
-    $result = $db->autoSearch($inputvalue);
+    $result = $db->autoComplete($inputvalue);
     $response = array(); 
     $temp = array();  
     while($row = $result->fetch_assoc()){ 
@@ -174,7 +232,7 @@ $app->get('/autosearch/:id', function($inputvalue) use ($app){
 	$array = array_values( array_unique( $array, SORT_REGULAR ) );
 
 	// Make a JSON string from the array.
-	echo json_encode( $array ); 
+	echo json_encode( $array ); exit;
  
 });
 
@@ -342,24 +400,11 @@ function returnResponse($status_code, $response){
     return  json_encode($response);
 }
 
-
-function youtubeID($url){
-     $res = explode("v",$url); 
-     if(isset($res[1])){
-        $res1 = explode('&',$res[1]);
-        if(isset($res1[1])){
-            $res[1] = $res1[0];
-        }
-        $res1 = explode('#',$res[1]);
-        if(isset($res1[1])){
-            $res[1] = $res1[0];
-        }
-     }
-	 else{
-		 return $url;
-	 }
-     return substr($res[1],1,12);
-     return false;
+ 
+function youtubeID($url){ 
+    # https://www.youtube.com/watch?v=nn5hCEMyE-E
+    preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $url, $matches);
+    return $matches[1];  
  }
 function verifyRequiredParams($required_fields)
 {
