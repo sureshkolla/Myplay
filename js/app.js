@@ -300,6 +300,7 @@ $scope.searching =function(info){
 	    }
 	},1000);
 } 
+
 $scope.clicked = function(val){
 	$scope.info.searchbox=val;
 	$timeout(function() { 

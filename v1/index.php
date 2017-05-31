@@ -105,8 +105,7 @@ $app->post('/deletevideo','authenticateUser', function () use ($app) {
 $app->get('/editvideo/:id','authenticateUser', function ($id) use ($app) {  
     $response = array(); 
     $db = new DbOperation();  
-    $res = $db->editVideos($id); 
-  
+    $res = $db->editVideos($id);   
     $resultset = array(); 
     foreach($res as $data) {
 		$resultset['id'] = $data['id'];
