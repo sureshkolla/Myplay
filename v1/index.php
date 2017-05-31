@@ -102,31 +102,11 @@ $app->post('/deletevideo','authenticateUser', function () use ($app) {
         echoResponse(200, $response);
     }  
 });
- $app->get('/myvideos/:id','authenticateUser', function($id) use ($app){
-    $db = new DbOperation();
-    $result = $db->myVideos($id);
-    $response = array();
-    $response['error'] = false;
-    $response['assignments'] = array();
-    while($row = $result->fetch_assoc()){
-        $temp = array();
-        $temp['id']=$row['id'];
-        $temp['title'] = $row['title'];
-        $temp['category'] = $row['category'];
-        $temp['url'] = $row['url'];
-        $temp['description'] = $row['description'];
-        $temp['owner'] = $row['owner'];
-        $temp['createdon'] = $row['createdon'];
-        $temp['status'] = $row['status'];          
-        //$temp['faculty']= $db->getFacultyName($row['faculties_id']);
-         array_push($response['assignments'],$temp);
-    }
-    echoResponse(200,$response);
-});
 $app->get('/editvideo/:id','authenticateUser', function ($id) use ($app) {  
-   $response = array(); 
+    $response = array(); 
     $db = new DbOperation();  
     $res = $db->editVideos($id); 
+  
     $resultset = array(); 
     foreach($res as $data) {
 		$resultset['id'] = $data['id'];
@@ -136,23 +116,18 @@ $app->get('/editvideo/:id','authenticateUser', function ($id) use ($app) {
 		$resultset['url'] = "https://www.youtube.com/watch?v=".$data['url']; 
 		$resultset['description'] = $data['description']; 
     }   
+     
    echoResponse(200,$resultset);
 });
-$app->get('/favorites/:id','authenticateUser', function ($id) use ($app) { 
-   //verifyRequiredParams(array('userid'));
-   $response = array(); 
-   // $userid = $app->request->post('userid'); 
-    $db = new DbOperation();  
-    $res = $db->likeVideoIds($id); 
-    $resultset = array(); 
-    foreach($res as $data) {
-		$resultset[] = $data['videoid']; 
-    }  
-	 
-    $result = $db->myFavoriteVideos($resultset);
+ $app->get('/myvideos/:id','authenticateUser', function($id) use ($app){
+    $db = new DbOperation();
+    $result = $db->myVideos($id);
     $response = array();
     $response['error'] = false;
     $response['assignments'] = array();
+    $interestedby= array();
+    $response['interestedby']= array();
+   
     while($row = $result->fetch_assoc()){
         $temp = array();
         $temp['id']=$row['id'];
@@ -162,10 +137,59 @@ $app->get('/favorites/:id','authenticateUser', function ($id) use ($app) {
         $temp['description'] = $row['description'];
         $temp['owner'] = $row['owner'];
         $temp['createdon'] = $row['createdon'];
-        $temp['status'] = $row['status'];          
-        //$temp['faculty']= $db->getFacultyName($row['faculties_id']);
-         array_push($response['assignments'],$temp);
+        $temp['status'] = $row['status'];  
+         $temp['firstname'] = $row['fname'];
+         $temp['lastname'] = $row['lname'];        
+        array_push( $interestedby,$row['id']); 
+        array_push($response['assignments'],$temp);
     }
+    //$strusers = implode (", ",  $interestedby);   
+    $result = $db->interestedByuser($id);  
+    while($row = $result->fetch_assoc()){ 
+     	$temp1 = array();  
+        $temp1['userid'] = $row['userid'];
+        $temp1['videoid'] = $row['videoid']; 
+        array_push( $response['interestedby'],$temp1); 
+    } 
+    echoResponse(200,$response);
+});
+$app->get('/favorites/:id','authenticateUser', function ($id) use ($app) {  
+   	$response = array();   
+    $db = new DbOperation();  
+    $res = $db->likeVideoIds($id); 
+    $resultset = array(); 
+    foreach($res as $data) {
+		$resultset[] = $data['videoid']; 
+    } 	 
+    $result = $db->myFavoriteVideos($resultset);
+    $response = array();
+    $response['error'] = false;
+    $response['assignments'] = array();
+    $interestedby= array();
+    $response['interestedby']= array();
+    while($row = $result->fetch_assoc()){
+        $temp = array();
+        $temp['id']=$row['id'];
+        $temp['title'] = $row['title'];
+        $temp['category'] = $row['category'];
+        $temp['url'] = $row['url'];
+        $temp['description'] = $row['description'];
+        $temp['owner'] = $row['owner'];
+        $temp['createdon'] = $row['createdon'];
+        $temp['status'] = $row['status'];  
+         $temp['firstname'] = $row['fname'];
+         $temp['lastname'] = $row['lname'];          
+        array_push( $interestedby,$row['id']); 
+        array_push($response['assignments'],$temp);
+    }
+   // $strusers = implode (", ",  $interestedby);  
+   $result = $db->interestedByuser($id);       
+    while($row = $result->fetch_assoc()){ 
+     	$temp1 = array();  
+        $temp1['userid'] = $row['userid'];
+        $temp1['videoid'] = $row['videoid']; 
+        array_push( $response['interestedby'],$temp1); 
+    } 
     echoResponse(200,$response);
 });
 $app->get('/loadvideos/:id', function($catid) use ($app){
@@ -174,6 +198,8 @@ $app->get('/loadvideos/:id', function($catid) use ($app){
     $response = array();
     $response['error'] = false;
     $response['assignments'] = array();
+    $interestedby= array();
+    $response['interestedby']= array();
     while($row = $result->fetch_assoc()){
         $temp = array();
         $temp['id']=$row['id'];
@@ -183,10 +209,20 @@ $app->get('/loadvideos/:id', function($catid) use ($app){
         $temp['description'] = $row['description'];
         $temp['owner'] = $row['owner'];
         $temp['createdon'] = $row['createdon'];
-        $temp['status'] = $row['status'];          
-        //$temp['faculty']= $db->getFacultyName($row['faculties_id']);
+        $temp['status'] = $row['status'];    
+         $temp['firstname'] = $row['fname'];
+         $temp['lastname'] = $row['lname'];           
+         array_push( $interestedby,$row['id']); 
          array_push($response['assignments'],$temp);
     }
+    $strusers = implode (", ",  $interestedby);   
+    $result = $db->interestedBy($strusers);  
+    while($row = $result->fetch_assoc()){ 
+     	$temp1 = array();  
+        $temp1['userid'] = $row['userid'];
+        $temp1['videoid'] = $row['videoid']; 
+        array_push( $response['interestedby'],$temp1); 
+    }    
     echoResponse(200,$response);
 });
 $app->get('/search/:id', function($search) use ($app){
@@ -196,18 +232,31 @@ $app->get('/search/:id', function($search) use ($app){
     $response = array();
     $response['error'] = false;
     $response['assignments'] = array();
+    $interestedby= array();
+    $response['interestedby']= array();
     while($row = $result->fetch_assoc()){
         $temp = array();
-        $temp['id']=$row['id'];
+        $temp['id']=$row['id']; 
         $temp['title'] = $row['title'];
         $temp['category'] = $row['category'];
         $temp['url'] = $row['url'];
         $temp['description'] = $row['description'];
         $temp['owner'] = $row['owner'];
         $temp['createdon'] = $row['createdon'];
-        $temp['status'] = $row['status'];          
+        $temp['status'] = $row['status'];      
+         $temp['firstname'] = $row['fname'];
+         $temp['lastname'] = $row['lname'];     
+        array_push( $interestedby,$row['id']);    
         array_push($response['assignments'],$temp);
-    }
+    }        
+    $strusers = implode (", ",  $interestedby);   
+    $result = $db->interestedBy($strusers);  
+    while($row = $result->fetch_assoc()){ 
+     	$temp1 = array();  
+        $temp1['userid'] = $row['userid'];
+        $temp1['videoid'] = $row['videoid']; 
+        array_push( $response['interestedby'],$temp1); 
+    }    
     echoResponse(200,$response);
 });
 $app->get('/autocomplete/:id', function($inputvalue) use ($app){
@@ -219,6 +268,8 @@ $app->get('/autocomplete/:id', function($inputvalue) use ($app){
     while($row = $result->fetch_assoc()){ 
         $temp['title'] = $row['title'];
         $temp['description'] = $row['description']; 
+        $temp['firstname'] = $row['fname'];
+        $temp['lastname'] = $row['lname'];
         array_push( $response,$temp);
     }   
     $response1=returnResponse(200,$response);
@@ -226,11 +277,9 @@ $app->get('/autocomplete/:id', function($inputvalue) use ($app){
 	$multiple = json_decode($response1, true);
 	foreach($multiple as $single)
     $implode[] = implode('", "', $single); 
-	$jsonstring= '["'.implode('", "', $implode).'"]';   //this will output abaneel, 23, john, 32, Dev, 22
-	
+	$jsonstring= '["'.implode('", "', $implode).'"]';   //this will output abaneel, 23, john, 32, Dev, 22	
 	$array = json_decode( $jsonstring, TRUE ); 
 	$array = array_values( array_unique( $array, SORT_REGULAR ) );
-
 	// Make a JSON string from the array.
 	echo json_encode( $array ); exit;
  
@@ -241,16 +290,13 @@ $app->get('/getcategory', function() use ($app){
     $result = $db->getCategory();
     $response = array();
     $response['error'] = false;
-    $response['allcategories'] = array();
-	//exit;
-	
+    $response['allcategories'] = array(); 
     while($row = $result->fetch_assoc()){
         $temp = array();
         $temp['id']=$row['id'];
         $temp['cetegory_name'] = $row['cetegory_name'];       
         $temp['createdon'] = $row['createdon'];
-        $temp['status'] = $row['status'];          
-        //$temp['faculty']= $db->getFacultyName($row['faculties_id']);
+        $temp['status'] = $row['status'];   
          array_push($response['allcategories'],$temp);
     }
     echoResponse(200,$response);
@@ -276,7 +322,7 @@ $app->post('/createuser', function () use ($app) {
         echoResponse(200, $response);
     } else if ($res == 2) {
         $response["error"] = true;
-        $response["message"] = "Sorry, this student  already existed";
+        $response["message"] = "Sorry, this user already existed";
         echoResponse(200, $response);
     }
 });
@@ -324,11 +370,8 @@ $app->post('/createassignment',function() use ($app){
     $details = $app->request->post('details');
     $facultyid = $app->request->post('facultyid');
     $studentid = $app->request->post('studentid');
-
     $db = new DbOperation();
-
     $response = array();
-
     if($db->createAssignment($name,$details,$facultyid,$studentid)){
         $response['error'] = false;
         $response['message'] = "Assignment created successfully";
@@ -336,9 +379,7 @@ $app->post('/createassignment',function() use ($app){
         $response['error'] = true;
         $response['message'] = "Could not create assignment";
     }
-
     echoResponse(200,$response);
-
 });
 
 /* *
@@ -365,14 +406,12 @@ $app->get('/assignments/:id', 'authenticateUser', function($student_id) use ($ap
     echoResponse(200,$response);
 });
 
-
 /* *
  * URL: http://localhost/StudentApp/v1/submitassignment/<assignment_id>
  * Parameters: none
  * Authorization: Put API Key in Request Header
  * Method: PUT
  * */
-
 $app->put('/submitassignment/:id', 'authenticateFaculty', function($assignment_id) use ($app){
     $db = new DbOperation();
     $result = $db->updateAssignment($assignment_id);
@@ -399,31 +438,29 @@ function returnResponse($status_code, $response){
     $app->contentType('application/json');
     return  json_encode($response);
 }
-
  
 function youtubeID($url){ 
     # https://www.youtube.com/watch?v=nn5hCEMyE-E
     preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $url, $matches);
-    return $matches[1];  
+    
+     
+    return $matches[1]; 
+     
  }
-function verifyRequiredParams($required_fields)
-{
+function verifyRequiredParams($required_fields){
     $error = false;
     $error_fields = "";
-    $request_params = $_REQUEST;
-
+    $request_params = $_REQUEST; 
     if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         $app = \Slim\Slim::getInstance();
         parse_str($app->request()->getBody(), $request_params);
-    }
-
+    } 
     foreach ($required_fields as $field) {
         if (!isset($request_params[$field]) || strlen(trim($request_params[$field])) <= 0) {
             $error = true;
             $error_fields .= $field . ', ';
         }
-    }
-
+    } 
     if ($error) {
         $response = array();
         $app = \Slim\Slim::getInstance();

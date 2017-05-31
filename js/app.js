@@ -35,11 +35,22 @@ app.controller("DbController",['$scope','$http','$localStorage','$location','$ti
 	        });
 	    });
 	}
+	function YouTubeGetID(url){
+		  var ID = '';
+		  url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+		  if(url[2] !== undefined) {
+		    ID = url[2].split(/[^0-9a-z_\-]/i);
+		    ID = ID[0];
+		  }
+		  else {
+		    ID = url;
+		  }
+		    return ID;
+		}
 	bootstrap_alert = function () {}
 	bootstrap_alert.warning = function (message, alertclass, timeout) {
 	$("#floating_alert").remove();
-    $('<div id="floating_alert" class="alert alert-' + alertclass + ' fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>' + message + '&nbsp;&nbsp;</div>').appendTo('body');
-   
+    $('<div id="floating_alert" class="alert alert-' + alertclass + ' fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>' + message + '&nbsp;&nbsp;</div>').appendTo('body');   
     $timeout(function () {
     	 $("#floating_alert").hide();
     }, timeout);    
@@ -64,8 +75,8 @@ $scope.search =function(info){
 	 	});
 	}
 };
-$scope.myVideos =function(){ 	
-	$id=$scope.sessionid; 
+$scope.myVideos =function(){ 	 
+	$id=$scope.sessionid;  
 	$scope.activetab="My"; 
 	$http({  
       url: 'v1/myvideos/'+$id,  
@@ -81,8 +92,7 @@ $scope.myVideos =function(){
  		 $(".signin a").click();
  		 bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 		
  	}); 
-};
- 
+}; 
 $scope.fireEvent=function($event) { 
     var theModal = $event.currentTarget.getAttribute("data-target"),
     videoSRC = $event.currentTarget.getAttribute("data-theVideo"),
@@ -118,12 +128,11 @@ $scope.fireEvent=function($event) {
 $scope.uploadvideo = function(videoInfo){  
 	videoInfo.owner=$scope.sessionid;  
 	if(videoInfo.id !=undefined && !(videoInfo.id==isNaN(videoInfo.id))){
-		var apiurl="v1/updatevideo";  
+		var apiurl="v1/updatevideo";   
 	}
 	else { 
 		var apiurl="v1/createvideo"; 
-	}
-	 
+	}	 
     $http({  
           url: apiurl,  
           dataType: 'json',  
@@ -136,7 +145,15 @@ $scope.uploadvideo = function(videoInfo){
        }).success(function(data){
     	 if(!data.error){
     		 bootstrap_alert.warning(data.message, 'success', 4000);
-		     $.magnificPopup.close();
+    		 $.magnificPopup.close();
+    		 /** Update data from javascript**/
+    		 if(videoInfo.id !=undefined && !(videoInfo.id==isNaN(videoInfo.id))){    			 
+    			 var videourl=YouTubeGetID(videoInfo.url);		 
+    			 $('#video'+videoInfo.id).find('.btn-default img').attr('src','https://img.youtube.com/vi/'+videourl+'/1.jpg');
+    			 $('#video'+videoInfo.id).find('.title').text(videoInfo.title);
+    			 $('#video'+videoInfo.id).find('a.author').text(videoInfo.owner);
+			 }
+		     
   	   }else{ 
   		   bootstrap_alert.warning(data.message, 'danger', 4000);
   	   }
@@ -229,6 +246,7 @@ $scope.deletevideo = function(event,$vid){
      }).success(function(data){		  
 		if(!data.error){
   		 	 bootstrap_alert.warning(data.message, 'success', 4000); 
+  		 	/** Delete data from javascript**/
   		 	 angular.element(event.target).parents('.parent-template').remove();
 	   }else{ 
 		   bootstrap_alert.warning(data.message, 'danger', 4000);

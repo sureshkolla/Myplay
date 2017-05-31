@@ -143,7 +143,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							  </div>
 							   <div class="form-group">
 							    <label for="age">Age:</label>
-							    <input type="text" class="form-control" id="age"  ng-model="userInfo.age">
+							    <input type="number" class="form-control" id="age"  ng-model="userInfo.age">
 							  </div>
 							   <div class="form-group">
 							    <label for="email">UserName:</label>
@@ -236,16 +236,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								// Animation complete.
 							});
 							});
-						</script>  
-						
+						</script>   
 						<li ng-if="sessionid!=0" class="logout"><a  href="#/logout"  ng-click="logout()"  class="sub-icon"><span class="glyphicon glyphicon-film glyphicon-king" aria-hidden="true"></span>Log Out</a></li>
 					 </ul> 
 				  <!-- script-for-menu -->
 					<script>
 						$( ".top-navigation" ).click(function() {
-						$( ".drop-navigation" ).slideToggle( 300, function() {
-						// Animation complete.
-						});
+							$( ".drop-navigation" ).slideToggle( 300, function() {
+								// Animation complete.
+							});
 						});
 					</script> 
 				</div>
@@ -260,7 +259,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							</div> 
 							<div class="clearfix"> </div>
 						</div>  
-						<div class="col-md-2 parent-template resent-grid recommended-grid sports-recommended-grid" ng-repeat="vdetail in videodetails">							 
+						<div class="col-md-2 parent-template resent-grid recommended-grid sports-recommended-grid" ng-repeat="vdetail in videodetails" id="video{{vdetail.id}}">						 
 							 
 								<div class="resent-grid-img recommended-grid-img"> 
 									<a href="#" class="btn btn-default"  ng-click="fireEvent($event)" data-toggle="modal" data-target="#videoModal" data-theVideo="{{vdetail.url}}"><img src="https://img.youtube.com/vi/{{vdetail.url}}/1.jpg" alt="" /></a>
@@ -272,22 +271,23 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									</div>
 								</div>
 								<div class="resent-grid-info recommended-grid-info">
-									<h5><a href="javascript:void(0)" class="title">Nullam interdum metus {{vdetail.title}}</a></h5>
-									
+									<h5><a href="javascript:void(0)" class="title">Nullam interdum metus {{vdetail.title}}</a></h5>									
 									<p class="author" style="margin-top:0px;">
-										<a  href="javascript:void(0)" class="author">John Maniy {{vdetail.owner}}</a>
-										<a href="javascript:void(0)" ng-click="liked(vdetail.id)"  class="likes" ><span ng-class1="glyphicon-thumbs-up : vdetail.id === vdetail.owner"  class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></a>
+										<a  href="javascript:void(0)" class="author">{{vdetail.firstname}} {{vdetail.lastname}}</a>
+										<a href="javascript:void(0)" ng-click="liked(vdetail.id)"  class="likes">
+											<span ng-if="sessionid!=0" ng-class1="glyphicon-thumbs-up : vdetail.id === vdetail.owner"  class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+											
+										</a>
 									</p>  
 								 	<p ng-if="activetab == 'My'" class="views" style="text-align: right;">
 										<a href="javascript:void(0)" ng-click="editvideo(vdetail.id)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> &nbsp;|&nbsp;
 										<a href="javascript:void(0)" ng-click="deletevideo($event,vdetail.id)" class="likes"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
 									</p>  
 								</div> 
-							 
-							
+						
 						</div> 
 						<p ng-if="videodetails.length==0" class="center lead">
-						    Nothing was found!!!
+						    Nothing is found!!!
 						</p> 
 						<div class="clearfix"> </div>
 					</div>
