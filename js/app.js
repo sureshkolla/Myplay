@@ -55,13 +55,14 @@ app.controller("DbController",['$scope','$http','$localStorage','$location','$ti
     	 $("#floating_alert").hide();
     }, timeout);    
 }
-$scope.sessionid=($localStorage.userId !=undefined)? $localStorage.userId :0;  	
+$scope.sessionid=($localStorage.userId !=undefined)? $localStorage.userId :0;
+$scope.sessionuser=$localStorage.user; 
 $scope.loadVideos =function($id,$cat=''){  
 	$scope.activetab=$id;
 	if($cat !='')
 	$scope.activetab=$cat; 
  	$http.get('v1/loadvideos/'+$id).success(function(data){
- 		$scope.videodetails = data.assignments;
+ 		$scope.videodetails = data;
  		autoPlayYouTubeModal();
  	}); 
 }; 
@@ -70,7 +71,7 @@ $scope.search =function(info){
 	 	$http.get('v1/search/'+info.searchbox).success(function(data){
 	 		$scope.categorytype="Search "; 
 	 		$scope.activetab="Search";
-	 		$scope.videodetails = data.assignments;
+	 		$scope.videodetails = data;
 	 		autoPlayYouTubeModal();
 	 	});
 	}
@@ -86,7 +87,7 @@ $scope.myVideos =function(){
      	} 
    }).success(function(data){  
 	   	   $scope.categorytype="My";
-		   $scope.videodetails = data.assignments;
+		   $scope.videodetails = data;
     	   autoPlayYouTubeModal(); 	  
  	}).error(function(data){ 
  		 $(".signin a").click();
@@ -110,6 +111,7 @@ $scope.fireEvent=function($event) {
     	   if(!data.error){
 		    	 $localStorage.Authorization =data.apikey;
 		    	 $localStorage.userId =data.id; 
+		    	 $localStorage.user =data.username; 
 		    	 window.location.reload();
     	   }else{ 
     		   bootstrap_alert.warning(data.message, 'danger', 4000);
@@ -151,7 +153,8 @@ $scope.uploadvideo = function(videoInfo){
     			 var videourl=YouTubeGetID(videoInfo.url);		 
     			 $('#video'+videoInfo.id).find('.btn-default img').attr('src','https://img.youtube.com/vi/'+videourl+'/1.jpg');
     			 $('#video'+videoInfo.id).find('.title').text(videoInfo.title);
-    			 $('#video'+videoInfo.id).find('a.author').text(videoInfo.owner);
+    			 $('#video'+videoInfo.id).find('span.fname').text(videoInfo.fname);
+    			 $('#video'+videoInfo.id).find('span.lname').text(videoInfo.lname);
 			 }
 		     
   	   }else{ 
@@ -205,10 +208,18 @@ $scope.createuser = function(userInfo){
  		 bootstrap_alert.warning(data.message, 'danger', 4000);
  	});
 }
-$scope.liked = function($vid){  
+$scope.liked = function($vid,event){  
 	 var user={};
 	 user.userid=$scope.sessionid; 
-	 user.videoid=$vid; 
+	 user.videoid=$vid;  
+	 if(angular.element(event.target).hasClass('glyphicon-thumbs-up')){ 
+		angular.element(event.target).removeClass('glyphicon-thumbs-up').addClass('glyphicon-thumbs-down');
+		 user.favstatus=1;
+	 }
+	 else{
+		 angular.element(event.target).removeClass('glyphicon-thumbs-down').addClass('glyphicon-thumbs-up');
+		 user.favstatus=0;
+	 }
      $http({  
          url: "v1/liked",  
          dataType: 'json',  
@@ -220,21 +231,21 @@ $scope.liked = function($vid){
      	} 
       }).success(function(data){		  
 		if(!data.error){
-   		 	 bootstrap_alert.warning(data.message, 'success', 4000);
-   		 	$("a.likes span").removeClass('glyphicon-thumbs-down');
+   		 	 bootstrap_alert.warning(data.message, 'success', 4000);   		 	 
  	   }else{ 
  		   bootstrap_alert.warning(data.message, 'danger', 4000);
  	   }
 	}).error(function(data){
 		 $(".signin a").click();
-			bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 
+		  bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 
 	});
 } 
+
 $scope.deletevideo = function(event,$vid){  
 	 var user={};
 	 user.userid=$scope.sessionid; 
 	 user.videoid=$vid;
-    $http({  
+     $http({  
         url: "v1/deletevideo",  
         dataType: 'json',  
         method: 'POST',  
@@ -267,9 +278,8 @@ $scope.favorites = function(){
 	   	  'Authorization': $localStorage.Authorization
     	} 
     }).success(function(data){  
-	  $scope.videodetails = data.assignments;
- 	   autoPlayYouTubeModal(); 
-	  
+	  $scope.videodetails = data;
+ 	   autoPlayYouTubeModal();  
 	}).error(function(data){ 
 		 $(".signin a").click();
 		 bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 		
@@ -300,7 +310,6 @@ $scope.searching =function(info){
 	    }
 	},1000);
 } 
-
 $scope.clicked = function(val){
 	$scope.info.searchbox=val;
 	$timeout(function() { 

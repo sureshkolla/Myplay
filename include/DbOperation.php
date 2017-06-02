@@ -32,10 +32,8 @@ class DbOperation
     }
   //Method to register a new student
  	public function updateVideo($title,$category,$url,$description,$owner,$vid){ 
- 		 if (!$this->isVideoExists($url,$vid)) {
- 		//echo "UPDATE uploadvideo SET title = '".$title."' ,category='".$category."' ,url='".$url."',description='".$description."' WHERE owner=$owner and id=$vid";
- 	    $stmt = $this->con->prepare("UPDATE uploadvideo SET title = '".$title."' ,category='".$category."' ,url='".$url."',description='".$description."' WHERE owner=$owner and id=$vid"); 	     
-        //$stmt->bind_param("ssssss",$title,$category,$url, $description,$owner,$vid);
+ 	  if (!$this->isVideoExists($url,$vid)) {
+ 	   $stmt = $this->con->prepare("UPDATE uploadvideo SET title = '".$title."' ,category='".$category."' ,url='".$url."',description='".$description."' WHERE owner=$owner and id=$vid"); 	     
        $result = $stmt->execute(); 
         $stmt->close();
   		if ($result) {
@@ -46,14 +44,13 @@ class DbOperation
  		 } else {
             return 2;
         }
-    }
- 
-	public function palyList($videoid,$userid){
+    } 
+	public function palyList($videoid,$userid,$favstatus){  
        if (!$this->isLiked($videoid,$userid)) {
             $cdate=date("Y/m/d h:m:s");
             $apikey = $this->generateApiKey();
-            $stmt = $this->con->prepare("INSERT INTO userplaylist(userid,videoid,createdon,status) values(?, ?, ?, ?)");           
             $status = true; 
+            $stmt = $this->con->prepare("INSERT INTO userplaylist(userid,videoid,createdon,status) values(?, ?, ?, ?)");          
             $stmt->bind_param('iisi',$userid,$videoid,$cdate,$status);
             $result = $stmt->execute();
             $stmt->close();
@@ -63,10 +60,17 @@ class DbOperation
                 return 1;
             }
         } else {
-            return 2;
+            $stmt = $this->con->prepare("UPDATE userplaylist SET status = ? WHERE userid=? and videoid=?");
+	        $stmt->bind_param("iii",$favstatus,$userid,$videoid);
+	        $result = $stmt->execute();
+	        $stmt->close();
+       		 if ($result){
+                return 10;
+            } else {
+                return 11;
+            }
         }
-    }
- 
+    } 
 	public function deletevideo($videoid,$userid){ 
             $stmt = $this->con->prepare("DELETE FROM uploadvideo WHERE id = ? and owner=?"); 
             $stmt->bind_param('ii',$videoid,$userid);
@@ -131,8 +135,7 @@ class DbOperation
             return true;
         }
         return false;
-    }
-
+    } 
     //Method to get all the assignments of a particular student
     public function getAssignments($studentid){
         $stmt = $this->con->prepare("SELECT * FROM assignments WHERE students_id=?");
@@ -141,8 +144,7 @@ class DbOperation
         $assignments = $stmt->get_result();
         $stmt->close();
         return $assignments;
-    }
-	 
+    }	 
     public function getVideos($catid){
     	if($catid == 'all'){
         	$stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id");
@@ -164,14 +166,13 @@ class DbOperation
         return $assignments;
     }
 	public function autoComplete($inputvalue){
-		$stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id   WHERE uploadvideo.title like '$inputvalue%' or uploadvideo.description like '$inputvalue%' or users.fname like '$inputvalue%' or users.lname like '$inputvalue%'");	 
+		$stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id  WHERE uploadvideo.title like '$inputvalue%' or uploadvideo.description like '$inputvalue%' or users.fname like '$inputvalue%' or users.lname like '$inputvalue%'");	 
         $stmt->execute();
         $assignments = $stmt->get_result();
         $stmt->close(); 
         return $assignments;
     }
- 	public function myVideos($id){  		
-	 
+ 	public function myVideos($id){  
         $stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id WHERE uploadvideo.owner=?");
         $stmt->bind_param("i",$id);    	 
         $stmt->execute();
@@ -181,15 +182,14 @@ class DbOperation
     }
 	public function interestedBy($ids){ 	 
 		if($ids!='') 
-      	$stmt = $this->con->prepare("SELECT * FROM userplaylist WHERE videoid  IN ($ids)"); 
+      	$stmt = $this->con->prepare("SELECT * FROM userplaylist WHERE  status=1 and videoid  IN ($ids)"); 
       	else 
-      	$stmt = $this->con->prepare("SELECT * FROM userplaylist where id=''");
+      	$stmt = $this->con->prepare("SELECT * FROM userplaylist where id='' and status=1");
         $stmt->execute();
         $assignments = $stmt->get_result();
         $stmt->close();
         return $assignments;
-    }
-	
+    } 
 	public function myFavoriteVideos($ids){ 		
 		$ids = join(', ', $ids);  
 		if($ids!='')
@@ -202,7 +202,7 @@ class DbOperation
         return $assignments;
     }
 	public function interestedByuser($uid){ 			 
-      	$stmt = $this->con->prepare("SELECT * FROM userplaylist where userid=$uid");
+      	$stmt = $this->con->prepare("SELECT * FROM userplaylist where userid=$uid and status=1");
         $stmt->execute();
         $assignments = $stmt->get_result();
         $stmt->close();
@@ -210,7 +210,7 @@ class DbOperation
     }
 	//	Method to get student details
     public function getFavorites($userid){ 
-        $stmt = $this->con->prepare("SELECT * FROM userplaylist WHERE userid=?");
+        $stmt = $this->con->prepare("SELECT * FROM userplaylist WHERE userid=? and status=1");
         $stmt->bind_param("i",$userid);
         $stmt->execute();
         $user = $stmt->get_result();
@@ -218,7 +218,7 @@ class DbOperation
         return $user; 
     }
 	public function likeVideoIds($id){ 
-       $stmt = $this->con->prepare("SELECT * FROM userplaylist WHERE userid=?");
+       $stmt = $this->con->prepare("SELECT * FROM userplaylist WHERE userid=? and status=1");
     	$stmt->bind_param("i",$id); 
         $stmt->execute();
         $assignments = $stmt->get_result();
@@ -239,8 +239,7 @@ class DbOperation
         $assignments = $stmt->get_result();
         $stmt->close();
         return $assignments;
-    }
-
+    } 
     //Method to get student details
     public function getUser($username){
         $stmt = $this->con->prepare("SELECT * FROM users WHERE username=?");
@@ -249,9 +248,7 @@ class DbOperation
         $user = $stmt->get_result()->fetch_assoc();
         $stmt->close();
         return $user;
-    }
-	
-
+    } 
     //Method to fetch all user from database
     public function getAllStudents(){
         $stmt = $this->con->prepare("SELECT * FROM users");
@@ -259,8 +256,7 @@ class DbOperation
         $users = $stmt->get_result();
         $stmt->close();
         return $users;
-    }   
-     
+    }    
     //Method to check the student username already exist or not
     private function isUserExists($username) {
         $stmt = $this->con->prepare("SELECT id from users WHERE username = ?");

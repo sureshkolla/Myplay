@@ -69,21 +69,26 @@ $app->post('/liked','authenticateUser', function () use ($app) {
     $response = array();
     $videoid = $app->request->post('videoid');
     $userid = $app->request->post('userid'); 
+    $favstatus = $app->request->post('favstatus'); 
     $db = new DbOperation();
-    $res = $db->palyList($videoid,$userid);
+    $res = $db->palyList($videoid,$userid,$favstatus);
     if ($res == 0) {
         $response["error"] = false;
-        $response["message"] = "You are successfully added to playlist";
+        $response["message"] = "Added to favorite list";
         echoResponse(201, $response);
     } else if ($res == 1) {
         $response["error"] = true;
-        $response["message"] = "Oops! An error occurred while addining to playlist";
+        $response["message"] = "Oops! An error occurred while addining to the playlist";
         echoResponse(200, $response);
-    }  else if ($res == 2) {
+    }  else  if ($res == 10) {
+        $response["error"] = false;
+        $response["message"] = "Removed from favorite list";
+        echoResponse(201, $response);
+    } else if ($res == 11) {
         $response["error"] = true;
-        $response["message"] = "This video you already liked";
+        $response["message"] = "Oops! An error occurred while updating to the playlist";
         echoResponse(200, $response);
-    }
+    } 
 });
 $app->post('/deletevideo','authenticateUser', function () use ($app) { 
     verifyRequiredParams(array('videoid','userid'));
@@ -148,6 +153,7 @@ $app->get('/editvideo/:id','authenticateUser', function ($id) use ($app) {
      	$temp1 = array();  
         $temp1['userid'] = $row['userid'];
         $temp1['videoid'] = $row['videoid']; 
+        $temp1['status'] = $row['status']; 
         array_push( $response['interestedby'],$temp1); 
     } 
     echoResponse(200,$response);
@@ -187,6 +193,7 @@ $app->get('/favorites/:id','authenticateUser', function ($id) use ($app) {
      	$temp1 = array();  
         $temp1['userid'] = $row['userid'];
         $temp1['videoid'] = $row['videoid']; 
+        $temp1['status'] = $row['status']; 
         array_push( $response['interestedby'],$temp1); 
     } 
     echoResponse(200,$response);
@@ -199,6 +206,7 @@ $app->get('/loadvideos/:id', function($catid) use ($app){
     $response['assignments'] = array();
     $interestedby= array();
     $response['interestedby']= array();
+   
     while($row = $result->fetch_assoc()){
         $temp = array();
         $temp['id']=$row['id'];
@@ -214,12 +222,14 @@ $app->get('/loadvideos/:id', function($catid) use ($app){
          array_push( $interestedby,$row['id']); 
          array_push($response['assignments'],$temp);
     }
+    //print_r($response['assignments']);exit;
     $strusers = implode (", ",  $interestedby);   
     $result = $db->interestedBy($strusers);  
     while($row = $result->fetch_assoc()){ 
      	$temp1 = array();  
         $temp1['userid'] = $row['userid'];
         $temp1['videoid'] = $row['videoid']; 
+        $temp1['status'] = $row['status']; 
         array_push( $response['interestedby'],$temp1); 
     }    
     echoResponse(200,$response);
@@ -253,7 +263,8 @@ $app->get('/search/:id', function($search) use ($app){
     while($row = $result->fetch_assoc()){ 
      	$temp1 = array();  
         $temp1['userid'] = $row['userid'];
-        $temp1['videoid'] = $row['videoid']; 
+        $temp1['videoid'] = $row['videoid'];
+        $temp1['status'] = $row['status']; 
         array_push( $response['interestedby'],$temp1); 
     }    
     echoResponse(200,$response);
@@ -271,6 +282,7 @@ $app->get('/autocomplete/:id', function($inputvalue) use ($app){
         $temp['lastname'] = $row['lname'];
         array_push( $response,$temp);
     }   
+     
     $response1=returnResponse(200,$response);
     $implode = array();
 	$multiple = json_decode($response1, true);
@@ -279,8 +291,8 @@ $app->get('/autocomplete/:id', function($inputvalue) use ($app){
 	$jsonstring= '["'.implode('", "', $implode).'"]';   //this will output abaneel, 23, john, 32, Dev, 22	
 	$array = json_decode( $jsonstring, TRUE ); 
 	$array = array_values( array_unique( $array, SORT_REGULAR ) );
-	// Make a JSON string from the array.
-	echo json_encode( $array ); exit;
+ 
+	 echo json_encode( $array );
  
 });
 

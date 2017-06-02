@@ -59,32 +59,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			             <li  ng-repeat="searchitem in searcharray" ng-click='clicked(searchitem)'>{{ searchitem }}</li>
 			         </ul> 
 					<input type="submit" value="" >
-					<style>
-					.datafromserver{
-					        width: 96%;
-						    position: absolute; 
-						    padding-left: 0px;
-						    list-style: none;
-						    background: #fff;
-						    border-radius: 0 0 2px 2px;
-						     -webkit-touch-callout: none;
-							 -webkit-tap-highlight-color: rgba(0,0,0,0); 
-							 border: 1px solid #ebebeb;							    
-							 color: #444;
-  							 background-color: #fff; 
-   						 }
-   						 .datafromserver li{
-   						 	    line-height: 22px;
-							    font-size: 14px;
-							    padding: 5px;
-							    border:1px solid #fff;
-   						 }
-   						  .datafromserver li:hover{
-   						 	color: #444;
-						    background-color: #ebebeb;
-						    border:1px solid #ebebeb;
-						    }
-					</style>
+					 
 				</form>
 			</div>  
 			<div class="header-top-right">
@@ -236,6 +211,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							});
 						</script>   
 						<li ng-if="sessionid!=0" class="logout"><a  href="#/logout"  ng-click="logout()"  class="sub-icon"><span class="glyphicon glyphicon-film glyphicon-king" aria-hidden="true"></span>Log Out</a></li>
+						<li ng-if="sessionid!=0" class="logout"><a  href="javascript:void(0)"   class="sub-icon"><span class="glyphicon glyphicon-film glyphicon-blackboard" aria-hidden="true" style="margin-right: 5px;"></span>Profile</a></li>
+						<ul class="cl-effect-3" style="display:block !important"><li><a style="padding-left: 5em !important ;color:#fff">: {{sessionuser}}</a></ul> 
 					 </ul> 
 				  <!-- script-for-menu -->
 					<script>
@@ -257,7 +234,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							</div> 
 							<div class="clearfix"> </div>
 						</div>  
-						<div class="col-md-2 parent-template resent-grid recommended-grid sports-recommended-grid" ng-repeat="vdetail in videodetails" id="video{{vdetail.id}}">						 
+						<div class="col-md-2 parent-template resent-grid recommended-grid sports-recommended-grid" ng-repeat="vdetail in videodetails.assignments" id="video{{vdetail.id}}">						 
 							 
 								<div class="resent-grid-img recommended-grid-img"> 
 									<a href="#" class="btn btn-default"  ng-click="fireEvent($event)" data-toggle="modal" data-target="#videoModal" data-theVideo="{{vdetail.url}}"><img src="https://img.youtube.com/vi/{{vdetail.url}}/1.jpg" alt="" /></a>
@@ -271,22 +248,35 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								<div class="resent-grid-info recommended-grid-info">
 									<h5><a href="javascript:void(0)" class="title">{{vdetail.title}}</a></h5>									
 									<p class="author" style="margin-top:0px;">
-										<a  href="javascript:void(0)" class="author">{{vdetail.firstname}} {{vdetail.lastname}}</a>
-										<a href="javascript:void(0)" ng-click="liked(vdetail.id)"  class="likes">
-											<span ng-if="sessionid!=0" ng-class1="glyphicon-thumbs-up : vdetail.id === vdetail.owner"  class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
-											
-										</a>
-									</p>{{vdetail.id}}
+										<a  href="javascript:void(0)" class="author"><span class="fname">{{vdetail.firstname}}</span> <span class="lname">{{vdetail.lastname}}</span></a>
+										<span class="defaultthumsup"> 
+											<a href="javascript:void(0)" ng-click="liked(vdetail.id,$event)" class="likes">										
+												<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>											
+											</a>
+										</span>
+										<span ng-if="sessionid!=0" class="favoritesec" ng-repeat="favstatus in videodetails.interestedby" > 
+											<a  ng-click="liked(vdetail.id,$event)" style="float:right"  ng-if="favstatus.videoid==vdetail.id && favstatus.userid==sessionid">	
+												<style>
+													#video{{favstatus.videoid}} .defaultthumsup{display:none;}
+												</style>									
+												<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>											
+											</a>  
+										</span> 
+										<!-- <span ng-if="sessionid==0" ng-repeat="favstatus in videodetails.interestedby" > 
+											<a href="javascript:void(0)" ng-click="liked(vdetail.id)" class="likes">										
+												<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>											
+											</a>  
+										</span>  -->
+									</p> 
 								 	<p ng-if="activetab == 'My'" class="views" style="text-align: right;">
 										<a href="javascript:void(0)" ng-click="editvideo(vdetail.id)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> &nbsp;|&nbsp;
 										<a href="javascript:void(0)" ng-click="deletevideo($event,vdetail.id)" class="likes"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
 									</p>  
 								</div> 
-						
-						</div> 
-						<p ng-if="videodetails.length==0" class="center lead">
-						    Nothing is found!!!
-						</p> 
+							</div> 
+							<p ng-if="videodetails.assignments.length==0" class="center lead">
+							    Nothing is found!!!
+							</p> 
 						<div class="clearfix"> </div>
 					</div>
 				</div>
@@ -511,21 +501,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="footer-top1">
 						<div class="footer-top-nav">
 							<ul>
-								<li><a href="about.html">About</a></li>
-								<li><a href="press.html">Press</a></li>
-								<li><a href="copyright.html">Copyright</a></li>
-								<li><a href="creators.html">Creators</a></li>
+								<li><a href="#">About</a></li>
+								<li><a href="#">Press</a></li>
+								<li><a href="#">Copyright</a></li>
+								<li><a href="#">Creators</a></li>
 								<li><a href="#">Advertise</a></li>
-								<li><a href="developers.html">Developers</a></li>
+								<li><a href="#">Developers</a></li>
 							</ul>
 						</div>
 						<div class="footer-bottom-nav">
 							<ul>
-								<li><a href="terms.html">Terms</a></li>
-								<li><a href="privacy.html">Privacy</a></li>
-								<li><a href="#small-dialog4" class="play-icon popup-with-zoom-anim">Send feedback</a></li>
-								<li><a href="privacy.html">Policy & Safety </a></li>
-								<li><a href="try.html">Try something new!</a></li>
+								<li><a href="#">Terms</a></li>
+								<li><a href="#">Privacy</a></li>
+								<li><a href="#">Send feedback</a></li>
+								<li><a href="#">Policy & Safety </a></li>
+								<li><a href="#">Try something new!</a></li>
 							</ul>
 						</div>
 					</div> 
