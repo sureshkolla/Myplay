@@ -277,9 +277,9 @@ $app->get('/autocomplete/:id', function($inputvalue) use ($app){
     $temp = array();  
     while($row = $result->fetch_assoc()){ 
         $temp['title'] = $row['title'];
-        $temp['description'] = $row['description']; 
-        $temp['firstname'] = $row['fname'];
-        $temp['lastname'] = $row['lname'];
+       // $temp['description'] = $row['description']; 
+       // $temp['firstname'] = $row['fname'];
+       // $temp['lastname'] = $row['lname'];
         array_push( $response,$temp);
     }   
      
