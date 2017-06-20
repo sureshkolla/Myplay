@@ -30,7 +30,7 @@ app.controller("DbController",['$scope','$http','$localStorage','$location','$ti
 	            videoSRC = $(this).attr("data-theVideo"),
 	            videoSRCauto = videoSRC + "?autoplay=1";
 	        $(theModal + ' iframe').attr('src', videoSRCauto);
-	        $(theModal + ' button.close').click(function () {
+	        $(theModal + ' button.close').click(function () { alert(0);
 	            $(theModal + ' iframe').attr('src', videoSRC);
 	        });
 	    });
@@ -63,7 +63,7 @@ $scope.loadVideos =function($id,$cat=''){
 	$scope.activetab=$cat; 
  	$http.get('v1/loadvideos/'+$id).success(function(data){
  		$scope.videodetails = data;
- 		autoPlayYouTubeModal();
+ 		//autoPlayYouTubeModal();
  	}); 
 }; 
 $scope.search =function(info){  
@@ -72,7 +72,7 @@ $scope.search =function(info){
 	 		$scope.categorytype="Search "; 
 	 		$scope.activetab="Search";
 	 		$scope.videodetails = data;
-	 		autoPlayYouTubeModal();
+	 		//autoPlayYouTubeModal();
 	 	});
 	}
 };
@@ -88,17 +88,20 @@ $scope.myVideos =function(){
    }).success(function(data){  
 	   	   $scope.categorytype="My";
 		   $scope.videodetails = data;
-    	   autoPlayYouTubeModal(); 	  
+    	  // autoPlayYouTubeModal(); 	  
  	}).error(function(data){ 
  		 $(".signin a").click();
  		 bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 		
  	}); 
 }; 
-$scope.fireEvent=function($event) { 
+$scope.fireEvent=function(vid,$event) { 
     var theModal = $event.currentTarget.getAttribute("data-target"),
     videoSRC = $event.currentTarget.getAttribute("data-theVideo"),
     videoSRCauto = videoSRC + "?autoplay=1"; 
 	$(theModal + ' iframe').attr('src', 'https://www.youtube.com/embed/'+videoSRCauto); 
+	$http.get('v1/views/'+vid).success(function(data){
+ 		  		 
+ 	}); 
 } 
  $scope.login = function(info){	
       $http({  
@@ -279,7 +282,7 @@ $scope.favorites = function(){
     	} 
     }).success(function(data){  
 	  $scope.videodetails = data;
- 	   autoPlayYouTubeModal();  
+ 	  // autoPlayYouTubeModal();  
 	}).error(function(data){ 
 		 $(".signin a").click();
 		 bootstrap_alert.warning("Pease login to your account", 'danger', 4000); 		

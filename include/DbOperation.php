@@ -45,6 +45,17 @@ class DbOperation
             return 2;
         }
     } 
+    public function views($videoid){  
+        $stmt = $this->con->prepare("UPDATE uploadvideo SET views = views+1 WHERE id=$videoid");
+        $result = $stmt->execute();
+        $stmt->close();
+       	 if ($result){
+                return 0;
+            } else {
+                return 1;
+            }
+        
+    } 
 	public function palyList($videoid,$userid,$favstatus){  
        if (!$this->isLiked($videoid,$userid)) {
             $cdate=date("Y/m/d h:m:s");
@@ -147,9 +158,9 @@ class DbOperation
     }	 
     public function getVideos($catid){
     	if($catid == 'all'){
-        	$stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id");
+        	$stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title,uploadvideo.views, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id");
     	}else{
-    		 $stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id WHERE uploadvideo.category=?");
+    		 $stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title,uploadvideo.views, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id WHERE uploadvideo.category=?");
     		 $stmt->bind_param("i",$catid);
     	} 
         $stmt->execute();
@@ -159,21 +170,21 @@ class DbOperation
     }
 	 
 	public function getSearch($search){		
-		$stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id  WHERE uploadvideo.title like '$search%' or uploadvideo.description like '$search%' or users.fname like '$search%' or users.lname like '$search%' ");		 	
+		$stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title,uploadvideo.views, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id  WHERE uploadvideo.title like '$search%' or uploadvideo.description like '%$search%' or users.fname like '%$search%' or users.lname like '%$search%' ");		 	
         $stmt->execute();
         $assignments = $stmt->get_result();
         $stmt->close();
         return $assignments;
     }
 	public function autoComplete($inputvalue){
-		$stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id  WHERE uploadvideo.title like '$inputvalue%' or uploadvideo.description like '$inputvalue%' or users.fname like '$inputvalue%' or users.lname like '$inputvalue%'");	 
+		$stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title,uploadvideo.views, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id  WHERE uploadvideo.title like '$inputvalue%' or uploadvideo.description like '%$inputvalue%' or users.fname like '%$inputvalue%' or users.lname like '%$inputvalue%'");	 
         $stmt->execute();
         $assignments = $stmt->get_result();
         $stmt->close(); 
         return $assignments;
     }
  	public function myVideos($id){  
-        $stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id WHERE uploadvideo.owner=?");
+        $stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title,uploadvideo.views, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id WHERE uploadvideo.owner=?");
         $stmt->bind_param("i",$id);    	 
         $stmt->execute();
         $assignments = $stmt->get_result();
@@ -193,9 +204,9 @@ class DbOperation
 	public function myFavoriteVideos($ids){ 		
 		$ids = join(', ', $ids);  
 		if($ids!='')
-       	 $stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id WHERE uploadvideo.id IN ($ids)"); 
+       	 $stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title,uploadvideo.views, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id WHERE uploadvideo.id IN ($ids)"); 
         else
-        $stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id WHERE uploadvideo.id=''"); 
+        $stmt = $this->con->prepare("SELECT uploadvideo.id as id, uploadvideo.title,uploadvideo.views, uploadvideo.category, uploadvideo.url, uploadvideo.description,uploadvideo.owner, uploadvideo.status,uploadvideo.createdon, users.id as userid,users.fname,users.lname FROM uploadvideo LEFT JOIN users on uploadvideo.owner = users.id WHERE uploadvideo.id=''"); 
         $stmt->execute();
         $assignments = $stmt->get_result();
         $stmt->close();

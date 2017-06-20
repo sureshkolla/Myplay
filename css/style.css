@@ -3,6 +3,8 @@ Author: W3layout
 Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
+set PATH=%PATH%;C:\xampp\htdocs\angular;C:\xampp\htdocs\angular\npm-5.0.3
+
 --*/
 body{
 	background:#fff;
@@ -86,9 +88,9 @@ form.navbar-form.navbar-right {
    border:1px solid #fff;
  }
  .datafromserver li:hover{
- 	  color: #444;
-	  background-color: #ebebeb;
-	  border:1px solid #ebebeb;
+	 	color: #444;
+  background-color: #ebebeb;
+  border:1px solid #ebebeb;
   }
 .header-top-right {
   float: right;
@@ -544,7 +546,7 @@ a.btn.btn-primary.btn-lg.see-button.hvr-shutter-out-horizontal {
   bottom: 1%;
   right: 9%;
   display: block;
-  z-index: 9;
+  z-index: 8;
 }
 .small-clck{
   right: 12%;
@@ -565,7 +567,7 @@ a.btn.btn-primary.btn-lg.see-button.hvr-shutter-out-horizontal {
 }
 .sports-tome {
     top: 82% !important;
-    z-index: 9;
+    z-index: 8;
 }
 .sports-clock {
 	right: 18%;
@@ -2061,7 +2063,10 @@ background: url(../images/social.png) no-repeat 0px 0px;
 	}
 	.drop-navigation{
 		display: none;
-		margin-top: 1em;
+		margin-top: 0em;
+		    position: absolute;
+    z-index: 9;
+    width: 100%;
 	}
 	.top-navigation {
 	     display: block;
@@ -2086,7 +2091,12 @@ background: url(../images/social.png) no-repeat 0px 0px;
 	}
 	.sidebar ul.nav-sidebar li {
 	    display: block;
+	    background-color: #232323;
 	}
+	ul.nav-sidebar li.active {
+    background-color: #232323 !important;
+    color: #FFFFFF !important;
+}
 	.sidebar ul li a {
 	  padding: .3em 0;
 	  display: block;
@@ -2094,7 +2104,7 @@ background: url(../images/social.png) no-repeat 0px 0px;
 	  color: #FFFFFF;
 	}
 	.nav-sidebar ul li a {
-		padding: .5em 0 .5em 39em !important;
+		padding: .5em 0 .5em 8em !important;
 	}
 	.main {
 		padding: 2em 0 0 0;

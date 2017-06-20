@@ -237,7 +237,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<div class="col-md-2 parent-template resent-grid recommended-grid sports-recommended-grid" ng-repeat="vdetail in videodetails.assignments" id="video{{vdetail.id}}">						 
 							 
 								<div class="resent-grid-img recommended-grid-img"> 
-									<a href="#" class="btn btn-default"  ng-click="fireEvent($event)" data-toggle="modal" data-target="#videoModal" data-theVideo="{{vdetail.url}}"><img src="https://img.youtube.com/vi/{{vdetail.url}}/1.jpg" alt="" /></a>
+									<a href="#" class="btn btn-default"  ng-click="fireEvent(vdetail.id,$event)" data-toggle="modal" data-target="#videoModal" data-theVideo="{{vdetail.url}}"><img src="https://img.youtube.com/vi/{{vdetail.url}}/1.jpg" alt="" /></a>
 									<div class="time small-time sports-tome">
 										<p>7:30</p>
 									</div>
@@ -272,6 +272,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 										<a href="javascript:void(0)" ng-click="editvideo(vdetail.id)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> &nbsp;|&nbsp;
 										<a href="javascript:void(0)" ng-click="deletevideo($event,vdetail.id)" class="likes"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
 									</p>  
+									<p class="views" >&nbsp;<span ng-if="vdetail.views>0">{{vdetail.views}} views</span></p>
 								</div> 
 							</div> 
 							<p ng-if="videodetails.assignments.length==0" class="center lead">

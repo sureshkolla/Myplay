@@ -90,6 +90,20 @@ $app->post('/liked','authenticateUser', function () use ($app) {
         echoResponse(200, $response);
     } 
 });
+$app->get('/views/:id', function ($videoid) use ($app) {
+    $response = array();
+    $db = new DbOperation();
+    $res = $db->views($videoid);
+    if ($res == 0) {
+        $response["error"] = false;
+        $response["message"] = "Added to view list";
+        echoResponse(201, $response);
+    } else if ($res == 1) {
+        $response["error"] = true;
+        $response["message"] = "Oops! An error occurred while addining to the playlist";
+        echoResponse(200, $response);
+    }  
+});
 $app->post('/deletevideo','authenticateUser', function () use ($app) { 
     verifyRequiredParams(array('videoid','userid'));
     $response = array();
@@ -120,8 +134,7 @@ $app->get('/editvideo/:id','authenticateUser', function ($id) use ($app) {
 		$resultset['url'] = "https://www.youtube.com/watch?v=".$data['url']; 
 		$resultset['description'] = $data['description']; 
     }   
-     
-   echoResponse(200,$resultset);
+	    echoResponse(200,$resultset);
 });
  $app->get('/myvideos/:id','authenticateUser', function($id) use ($app){
     $db = new DbOperation();
@@ -143,7 +156,8 @@ $app->get('/editvideo/:id','authenticateUser', function ($id) use ($app) {
         $temp['createdon'] = $row['createdon'];
         $temp['status'] = $row['status'];  
          $temp['firstname'] = $row['fname'];
-         $temp['lastname'] = $row['lname'];        
+         $temp['lastname'] = $row['lname'];   
+          $temp['views'] = $row['views'];     
         array_push( $interestedby,$row['id']); 
         array_push($response['assignments'],$temp);
     }
@@ -183,7 +197,8 @@ $app->get('/favorites/:id','authenticateUser', function ($id) use ($app) {
         $temp['createdon'] = $row['createdon'];
         $temp['status'] = $row['status'];  
          $temp['firstname'] = $row['fname'];
-         $temp['lastname'] = $row['lname'];          
+         $temp['lastname'] = $row['lname'];   
+          $temp['views'] = $row['views'];       
         array_push( $interestedby,$row['id']); 
         array_push($response['assignments'],$temp);
     }
@@ -218,7 +233,8 @@ $app->get('/loadvideos/:id', function($catid) use ($app){
         $temp['createdon'] = $row['createdon'];
         $temp['status'] = $row['status'];    
          $temp['firstname'] = $row['fname'];
-         $temp['lastname'] = $row['lname'];           
+         $temp['lastname'] = $row['lname'];   
+          $temp['views'] = $row['views'];        
          array_push( $interestedby,$row['id']); 
          array_push($response['assignments'],$temp);
     }
@@ -254,7 +270,8 @@ $app->get('/search/:id', function($search) use ($app){
         $temp['createdon'] = $row['createdon'];
         $temp['status'] = $row['status'];      
          $temp['firstname'] = $row['fname'];
-         $temp['lastname'] = $row['lname'];     
+         $temp['lastname'] = $row['lname'];  
+          $temp['views'] = $row['views'];   
         array_push( $interestedby,$row['id']);    
         array_push($response['assignments'],$temp);
     }        
@@ -282,20 +299,16 @@ $app->get('/autocomplete/:id', function($inputvalue) use ($app){
        // $temp['lastname'] = $row['lname'];
         array_push( $response,$temp);
     }   
-     
     $response1=returnResponse(200,$response);
     $implode = array();
 	$multiple = json_decode($response1, true);
 	foreach($multiple as $single)
-    $implode[] = implode('", "', $single); 
+    $implode[] = implode('", "', $single);
 	$jsonstring= '["'.implode('", "', $implode).'"]';   //this will output abaneel, 23, john, 32, Dev, 22	
-	$array = json_decode( $jsonstring, TRUE ); 
-	$array = array_values( array_unique( $array, SORT_REGULAR ) );
- 
-	 echo json_encode( $array );
- 
+	$array = json_decode($jsonstring, TRUE ); 
+	$array = array_values(array_unique( $array, SORT_REGULAR));
+	echo json_encode($array);
 });
-
 $app->get('/getcategory', function() use ($app){
     $db = new DbOperation();
     $result = $db->getCategory();
@@ -366,9 +379,6 @@ $app->post('/userlogin', function () use ($app) {
     }
     echoResponse(200, $response);
 });
-
- 
-
 /* *
  * URL: http://localhost/StudentApp/v1/createassignment
  * Parameters: name, details, facultyid, studentid
@@ -376,7 +386,6 @@ $app->post('/userlogin', function () use ($app) {
  * */
 $app->post('/createassignment',function() use ($app){
     verifyRequiredParams(array('name','details','facultyid','studentid'));
-
     $name = $app->request->post('name');
     $details = $app->request->post('details');
     $facultyid = $app->request->post('facultyid');
