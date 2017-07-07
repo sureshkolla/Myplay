@@ -1,0 +1,48 @@
+ <app-navbar></app-navbar>
+<div class="container"> 
+        <div class="col-sm-3 col-md-2 sidebar">
+			<div class="top-navigation">
+				<div class="t-menu">MENU</div>
+				<div class="t-img">
+					<img src="images/lines.png" alt="" />
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+				<div class="drop-navigation drop-navigation">	 
+				  <ul class="nav nav-sidebar">
+					<li  class="active"><a href="/home" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+					<li><a routerLink="/myfavorites/1" class="sub-icon"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>My favorites </a></li>		 
+					<li><a routerLink="/myvideos/1" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-hourglass" aria-hidden="true"></span>My Videos</a></li>
+					<li (click)="changeShowStatus()"><a class="menu1"  ><span class="glyphicon glyphicon-film" aria-hidden="true"></span>Category<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
+						<ul [hidden]="showCat" *ngFor="let category of categories.allcategories">
+							<li><a  [routerLink]="/loadvideos/{{category.id}}"> {{category.cetegory_name}}</a></li>                                             
+						</ul>
+						<!-- script-for-menu -->						 
+					 </ul>
+				  		<!-- script-for-menu -->					 
+				</div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="main-grids">
+				<div class="recommended">
+					<div class="recommended-grids english-grid">
+						<div class="recommended-info">
+							<div class="heading">
+								<h3>Recent Uploads</h3>
+							</div> 
+							<div class="clearfix"> </div>
+						</div>
+					 	<router-outlet></router-outlet>	
+					 	<!-- Given this configuration, when the browser URL for this application becomes /myvideos/1,
+					 	 the router matches that URL to the route path /heroes and displays the HeroListComponent after
+					 	  a RouterOutlet that you've placed in the host view's HTML. -->					  
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"> </div>
+		<footer> </footer>		
+	   <!--  <h3 class="well">This is a simple Angular 2 web application with CRUD operation.The front-end is made 
+	        of Angular 2 framework and the Back-End is made of  PHP and MySQL/MariaDB.    
+	    </h3> -->
+</div> 

@@ -1,0 +1,57 @@
+<div  class="col-md-2 parent-template resent-grid recommended-grid sports-recommended-grid"  *ngFor="let vdetail of videos.assignments"  >						 
+	<div class="resent-grid-img recommended-grid-img"> 
+		<a><img src="https://img.youtube.com/vi/{{vdetail.url}}/1.jpg" alt="" /></a>
+		<div class="time small-time sports-tome">
+			<p>7:30</p>
+		</div>
+		<div class="clck sports-clock">
+			<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+		</div>
+	</div>
+	<div class="resent-grid-info recommended-grid-info">
+		<h5><a href="javascript:void(0)" class="title">{{vdetail.title}}</a></h5>									
+		<p class="author" style="margin-top:0px;">
+			<a  href="javascript:void(0)" class="author"><span class="fname">{{vdetail.firstname}}</span> <span class="lname">{{vdetail.lastname}}</span></a>
+			<span class="defaultthumsup"> 
+				<a href="javascript:void(0)" (click)="liked(vdetail.id,$event)" class="likes">										
+					<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>											
+				</a>
+			</span>
+			<!-- <span ng-if="sessionid==0" ng-repeat="favstatus in videodetails.interestedby" > 
+				<a href="javascript:void(0)" ng-click="liked(vdetail.id)" class="likes">										
+					<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>											
+				</a>  
+			</span>  -->
+		</p>  
+		<p class="views" >&nbsp;{{vdetail.views}} views </p>
+	</div> 
+	<br/>
+</div> 
+ 
+						 
+<table class="table table-bordered col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+ 
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>Position</td>
+      <td>Department</td>
+      <td>Salary</td>
+      <td width=275 align="center">Action</td>
+    </tr>
+  </thead>
+  <tbody>
+     <tr *ngFor="let employee of employees">
+        <td>{{employee.name}}</td>
+        <td>{{employee.position}}</td>
+        <td>{{employee.department}}</td>
+        <td>{{employee.salary}}</td>
+        <td width=275> 
+            <a class="btn btn-info" routerLink="/show/{{employee._id}}">Detail</a> 
+            <a class="btn btn-success" routerLink="/edit/{{employee._id}}">Edit</a>
+            <a class="btn btn-danger" (click)="deleteEmployee(employee._id)">Delete</a>
+        </td>
+     </tr>    
+  </tbody>
+</table>
+ 
