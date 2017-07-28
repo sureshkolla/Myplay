@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EmpService } from './emp.service';
 import { Employee } from './employee';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -25,9 +26,7 @@ export class AppComponent {
      this._empService
         .getCategory()
         .subscribe(categories => {
-          this.categories =  categories; 
-          console.log(categories);
-          
+          this.categories =  categories;  
       } )
   }
   changeShowStatus(){   

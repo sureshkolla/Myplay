@@ -4,7 +4,7 @@ import { Employee } from '../employee';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 @Component({
   selector: 'app-favorites',
-  templateUrl: './favorites.component.html',
+   templateUrl: '../ems/home/home.component.html',
   styleUrls: ['./favorites.component.css']
 })
 export class FavoritesComponent implements OnInit {

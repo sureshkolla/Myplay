@@ -4,7 +4,7 @@ import { Employee } from '../../employee';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 @Component({
   selector: 'app-home',
-  templateUrl: './myvideos.component.html',
+   templateUrl: '/../home/home.component.html',
   styleUrls: ['./myvideos.component.css']
 })
 export class MyVideosComponent implements OnInit {

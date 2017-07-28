@@ -16,7 +16,8 @@ import { EmpService } from './emp.service';
 import { AddoneComponent } from './ems/addone/addone.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { LoadvideosComponent } from './ems/loadvideos/loadvideos.component';
-
+import { LocalStorageModule } from 'angular-2-local-storage';
+ import { HttpClient,HttpHeaders,HTTP_PROVIDERS  } from 'http-client';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,9 +34,14 @@ import { LoadvideosComponent } from './ems/loadvideos/loadvideos.component';
   ],
   imports: [
     BrowserModule,
+  
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    LocalStorageModule.withConfig({
+          prefix: 'my-app',
+          storageType: 'localStorage'
+    })
   ],
   providers: [EmpService],
   bootstrap: [AppComponent]

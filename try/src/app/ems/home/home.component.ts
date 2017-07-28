@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   name:string;
   employees:any;
   videos:any;
+  vid:any;
   constructor(
     private _empService:EmpService,
     private router: Router
@@ -32,9 +33,7 @@ export class HomeComponent implements OnInit {
      this._empService
         .getVideos()
         .subscribe(videos => {
-          this.videos =  videos;
-        console.log(JSON.stringify(videos));
-          console.log(videos);
+          this.videos =  videos; 
       } )
   }
   deleteEmployee(id){
@@ -44,5 +43,12 @@ export class HomeComponent implements OnInit {
         this.getEmployees();
       } )
   }
- 
+   
+ liked(vid){
+  vid={'userid':1,'videoid':vid,favstatus:1};
+  	 this._empService
+        .liked(vid)
+        .subscribe(videos => { 
+      } )
+ }
 }
