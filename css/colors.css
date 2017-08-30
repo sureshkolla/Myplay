@@ -1,0 +1,428 @@
+
+/* ---------- Color Module Styles ----------- */
+
+body,
+body.overlay {
+  color: #3b3b3b;
+  background-color: #e9e9e9;
+}
+.overlayopasity, 
+.overlay-mask 
+{
+  background-color: #e9e9e9;
+}
+a {
+  color: #606060;
+}
+a:hover,
+a:focus {
+  color: #cb2029;
+}
+a:active {
+
+}
+
+header {
+  background-color: #f5f5f5;
+  background-image: -moz-linear-gradient(top, #ffffff 0%, #f5f5f5 100%);
+  background-image: -ms-linear-gradient(top, #ffffff 0%, #f5f5f5 100%);
+  background-image: -o-linear-gradient(top, #ffffff 0%, #f5f5f5 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #f5f5f5));
+  background-image: -webkit-linear-gradient(top, #ffffff 0%, #f5f5f5 100%);
+  background-image: linear-gradient(top, #ffffff 0%, #f5f5f5 100%);
+}
+
+header #search .inn {
+  background-color: #eaeaea;
+  background-image: -moz-linear-gradient(top, #ebebeb 0%, #eaeaea 100%);
+  background-image: -ms-linear-gradient(top, #ebebeb 0%, #eaeaea 100%);
+  background-image: -o-linear-gradient(top, #ebebeb 0%, #eaeaea 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ebebeb), color-stop(1, #eaeaea));
+  background-image: -webkit-linear-gradient(top, #ebebeb 0%, #eaeaea 100%);
+  background-image: linear-gradient(top, #ebebeb 0%, #eaeaea 100%);
+  border-color: #d4d4d4;
+}
+header .chosen-container-single .chosen-single {
+  border-color: #d4d4d4;
+}
+header #search .form-text,
+header #search .views-submit-button:before,
+header .chosen-container-single .chosen-single span
+{
+  color: #888888;
+}
+ 
+header #nav,
+header .useraccount,
+header #notifications
+{
+  background-color: #f6f6f6;
+  background-image: -moz-linear-gradient(top, #fefefe 0%, #f6f6f6 100%);
+  background-image: -ms-linear-gradient(top, #fefefe 0%, #f6f6f6 100%);
+  background-image: -o-linear-gradient(top, #fefefe 0%, #f6f6f6 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fefefe), color-stop(1, #f6f6f6));
+  background-image: -webkit-linear-gradient(top, #fefefe 0%, #f6f6f6 100%);
+  background-image: linear-gradient(top, #fefefe 0%, #f6f6f6 100%);
+  border-color: #cdcdcd;
+  color: #b8b8b8;
+}
+
+header #nav:hover,
+header .useraccount:hover,
+header #notifications:hover
+{
+  background-color: #eeeeee;
+  background-image: -moz-linear-gradient(top, #fdfdfd 0%, #eeeeee 100%);
+  background-image: -ms-linear-gradient(top, #fdfdfd 0%, #eeeeee 100%);
+  background-image: -o-linear-gradient(top, #fdfdfd 0%, #eeeeee 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fdfdfd), color-stop(1, #eeeeee));
+  background-image: -webkit-linear-gradient(top, #fdfdfd 0%, #eeeeee 100%);
+  background-image: linear-gradient(top, #fdfdfd 0%, #eeeeee 100%);
+  border-color: #c0c0c0;
+  color: #b9b9b9;
+}
+
+header .nav-drop,
+header #search .chosen-container .chosen-drop,
+header .notifications-drop,
+header .notifications-drop .news_date,
+.add-drop
+{
+  background-color: #fefffe;
+  background-image: -moz-linear-gradient(top, #fefeff 0%, #fefffe 100%);
+  background-image: -ms-linear-gradient(top, #fefeff 0%, #fefffe 100%);
+  background-image: -o-linear-gradient(top, #fefeff 0%, #fefffe 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fefeff), color-stop(1, #fefffe));
+  background-image: -webkit-linear-gradient(top, #fefeff 0%, #fefffe 100%);
+  background-image: linear-gradient(top, #fefeff 0%, #fefffe 100%);
+  border-color: #aaaaaa;
+  color: #313131;
+}
+header .nav-drop a,
+.chosen-container .chosen-results,
+header .notifications-drop a,
+.tab-block ul.tabs li a,
+.add-drop a
+{
+  color: #838383;
+}
+header .nav-drop a:hover,
+header .nav-drop a:active,
+header .notifications-drop a:hover,
+.tab-block ul.tabs li a:hover,
+.add-drop a:hover
+{
+  color: #cb2027;
+}
+
+.userprofile, 
+.boardpins
+{
+  background-color: #fffffe;
+/* 
+  background-image: -moz-linear-gradient(top, #fffefe 0%, #fffffe 100%);
+  background-image: -ms-linear-gradient(top, #fffefe 0%, #fffffe 100%);
+  background-image: -o-linear-gradient(top, #fffefe 0%, #fffffe 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fffefe), color-stop(1, #fffffe));
+  background-image: -webkit-linear-gradient(top, #fffefe 0%, #fffffe 100%);
+  background-image: linear-gradient(top, #fffefe 0%, #fffffe 100%);
+ */
+  border-color: #eeeeef;
+  color: #333334;
+}
+.userpicture,
+.userstat
+{
+  border-color: #eeeeef;
+}
+.userpicture .user-picture img {
+  box-shadow: 0px 0px 0px -2px rgba(255, 255, 255, 0.48) inset, 0px 0px 0px 1px rgba(0, 0, 0, 0.14), 0px 0px 0px 8px #fffffe; 
+  -moz-box-shadow: 0px 0px 0px -2px rgba(255, 255, 255, 0.48) inset, 0px 0px 0px 1px rgba(0, 0, 0, 0.14), 0px 0px 0px 8px #fffffe;  
+  -moz-box-shadow: 0px 0px 0px -2px rgba(255, 255, 255, 0.48) inset, 0px 0px 0px 1px rgba(0, 0, 0, 0.14), 0px 0px 0px 8px #fffffe;
+}
+.userprofile .username,
+.boardpins h1.title
+{
+  color: #333333;
+}
+.usericons a,
+.userstat .v,
+.userstat .l,
+.boardpins .info .cou .v,
+.boardpins .info .cou .l,
+.usericons .fa.d,
+.usericons
+{
+  color: #9a9a9a;
+}
+.usericons a:hover,
+.userstat a:hover .v,
+.userstat a:hover .l,
+.boardpins .info .cou a:hover .v,
+.boardpins .info .cou a:hover .l,
+.userstat .active .v, 
+.userstat .active .l,
+.boardpins .info .cou .active .v,
+.boardpins .info .cou .active .l
+{
+  color: #cb2028;
+}
+/* Buttons */
+.pinbody .pinactions a,
+a.follow,
+.userbox a.follow,
+.boardbox a.follow,
+span.follow, 
+article .form-submit, 
+.ovre .form-submit, 
+#centre_on button, 
+button.ui-button, 
+.action-page-links a,
+.pageblk .action-page-links a,
+#BigPinItButton,
+.pinbox .action a.repin, 
+.pinbox .action a.like-button, 
+.pinbox .action a.commentt,
+#flag_b .form-submit,
+.node_pin_page .right .block .con .follow,
+.blk1 a.follow
+{
+  background-color: #f0f0f0;
+  background-image: -moz-linear-gradient(top, #fffeff 0%, #f0f0f0 100%);
+  background-image: -ms-linear-gradient(top, #fffeff 0%, #f0f0f0 100%);
+  background-image: -o-linear-gradient(top, #fffeff 0%, #f0f0f0 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fffeff), color-stop(1, #f0f0f0));
+  background-image: -webkit-linear-gradient(top, #fffeff 0%, #f0f0f0 100%);
+  background-image: linear-gradient(top, #fffeff 0%, #f0f0f0 100%);
+  border-color: #c2c2c2;
+  color: #5f5f5f;
+  text-shadow: 0px 1px #fcfcfc;
+}
+.pinbody .pinactions a:hover,
+a.follow:hover,
+.userbox a.follow:hover,
+.boardbox a.follow:hover,
+span.follow:hover, 
+article .form-submit:hover, 
+.ovre .form-submit:hover, 
+#centre_on button:hover, 
+button.ui-button:hover, 
+.action-page-links a:hover, 
+.pageblk .action-page-links a:hover,
+#BigPinItButton:hover,
+.pinbox .action a.repin:hover, 
+.pinbox .action a.like-button:hover, 
+.pinbox .action a.commentt:hover,
+#flag_b .form-submit:hover,
+.node_pin_page .right .block .con .follow:hover,
+.blk1 a.follow:hover
+{
+  background-color: #e1e1e1;
+  background-image: -moz-linear-gradient(top, #feffff 0%, #e1e1e1 100%);
+  background-image: -ms-linear-gradient(top, #feffff 0%, #e1e1e1 100%);
+  background-image: -o-linear-gradient(top, #feffff 0%, #e1e1e1 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #feffff), color-stop(1, #e1e1e1));
+  background-image: -webkit-linear-gradient(top, #feffff 0%, #e1e1e1 100%);
+  background-image: linear-gradient(top, #feffff 0%, #e1e1e1 100%);
+  border-color: #dddddd;
+  color: #505050;
+  text-shadow: 0px 1px #fcfcfb;
+}
+
+.category_title a.follow, 
+.category_title span.follow,
+.pinbody .pinactions a.repin,
+#BigPinItButton,
+.pinbox .action a.repin
+{
+  background-color: #ab171e;
+  background-image: -moz-linear-gradient(top, #e3262e 0%, #ab171e 100%);
+  background-image: -ms-linear-gradient(top, #e3262e 0%, #ab171e 100%);
+  background-image: -o-linear-gradient(top, #e3262e 0%, #ab171e 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e3262e), color-stop(1, #ab171e));
+  background-image: -webkit-linear-gradient(top, #e3262e 0%, #ab171e 100%);
+  background-image: linear-gradient(top, #e3262e 0%, #ab171e 100%);
+  border-color: #9a1015;
+  color: #fdfdff;
+  text-shadow: 0px 1px #c0191d;
+}
+.pinbody .pinactions a.repin span {
+  border-color: #9a1015;
+}
+.category_title a.follow:hover, 
+.category_title span.follow:hover,
+.pinbody .pinactions a.repin:hover,
+#BigPinItButton:hover,
+.pinbox .action a.repin:hover
+{
+  background-color: #c11a22;
+  background-image: -moz-linear-gradient(top, #e63d45 0%, #c11a22 100%);
+  background-image: -ms-linear-gradient(top, #e63d45 0%, #c11a22 100%);
+  background-image: -o-linear-gradient(top, #e63d45 0%, #c11a22 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e63d45), color-stop(1, #c11a22));
+  background-image: -webkit-linear-gradient(top, #e63d45 0%, #c11a22 100%);
+  background-image: linear-gradient(top, #e63d45 0%, #c11a22 100%);
+  border-color: #920c12;
+  color: #fdffff;
+  text-shadow: 0px 1px #c0191e;
+}
+.pinbody .pinactions a.repin:hover span {
+  border-color: #920c12;
+}
+
+.pinbox,
+.boardbox,
+.userbox,
+.blk1,
+.node_pin_page .right .block,
+.pageblk .inn,
+.pinbody,
+.pinbody .pinactions,
+.pinbody .pinurl,
+.pinbody .pintitle,
+.overlay-f-block,
+.messages-block,
+.overlay-block
+{
+  background-color: #fdfcfd;
+  background-image: -moz-linear-gradient(top, #fdfdfc 0%, #fdfcfd 100%);
+  background-image: -ms-linear-gradient(top, #fdfdfc 0%, #fdfcfd 100%);
+  background-image: -o-linear-gradient(top, #fdfdfc 0%, #fdfcfd 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fdfdfc), color-stop(1, #fdfcfd));
+  background-image: -webkit-linear-gradient(top, #fdfdfc 0%, #fdfcfd 100%);
+  background-image: linear-gradient(top, #fdfdfc 0%, #fdfcfd 100%);
+/*   border-color: #e3e3e3; */
+  color: #323232;
+}
+.pinbox .cont {
+  color: #323232;
+}
+.pinbox .field-type-image, 
+.pinbox .field-type-video-embed-field 
+{
+    background-color: #fdfcfd;
+}
+/* 
+.pinbody .pinactions,
+.pinbody .pinurl,
+.pinbody .pintitle
+{
+  background-color: #fdfcfd;
+}
+ */
+.pinbody .pinimage,
+.pinbody .pincontent
+{
+  background-color: #f8f8f8;
+}
+.pinbox a,
+.boardbox a,
+.userbox a,
+.blk1 a,
+.node_pin_page .right .block a,
+.pageblk a,
+.pinbody a,
+.overlay-block .tm i, 
+.overlay-f-block .tm i
+{
+  color: #595959;
+}
+.pinbox a:hover,
+.pinbox .user a:hover,
+.pinbox .user .board a:hover,
+.boardbox a:hover,
+.userbox a:hover,
+.blk1 a:hover,
+.node_pin_page .right .block a:hover,
+.pageblk a:hover,
+.pinbody a:hover,
+.overlay-block .tm i:hover, 
+.overlay-f-block .tm i:hover
+{
+  color: #cb2026;
+}
+.node_pin_page .right .block h4,
+.pageblk h1,
+.userbox .name,
+.boardbox .board,
+.comments form .form-type-item label,
+.comments form .form-type-textfield label,
+.pinautor .username, 
+.pinautor .boardname,
+.comment .username, 
+.commentform .username,
+.node_pin_page .right .block .con .board,
+.node_pin_page .right .block .con h6,
+.pinbox .user a,
+.pinbox .comment a,
+.blk1,
+.node_pin_page .right .block,
+.overlay-block h3, 
+.overlay-f-block h3,
+.overlay-block h4, 
+.overlay-f-block h4
+{
+  border-color: #e3e3e3;
+  color: #343434;
+}
+.block h4
+{
+  text-shadow: 0px 1px 0px #fcfcfd;
+}
+.boardbox .name,
+.userbox .stat,
+.pinbox .stat span,
+.blog .info,
+.links ul.links a,
+.node_pin_page .right .block .con .name,
+.node_pin_page .right .block .con .source_pin_t,
+.pinautor h6,
+.pinbox .user .board a
+{
+  color: #999999;
+}
+.pinbox .cont,
+.pinbox .user, 
+.pinbox .comment,
+.hr,
+.blog.node-teaser,
+.pinbody .pinurl,
+.pinbody .pintitle,
+.pinbody .pincontent,
+.pinautor .l,
+.pinautor .r
+{
+  border-color: #e3e3e3;
+}
+
+.footer,
+.footer .fa,
+.footer .faspin, 
+.footer .fapin
+{
+  background-color: #e9e9e9;
+  color: #c7c7c7;
+  text-shadow: 0px 1px 1px #fcfdfd;
+}
+.footer .r, 
+.footer .l
+{
+  color: #c7c7c7;
+  text-shadow: 0px 1px 1px #fcfdfd;
+}
+.footer hr {
+  border-color: #c7c7c7;
+}
+.footer a,
+.footer .r a,
+.footer .l a 
+{
+  color: #c8c8c8;
+  text-shadow: 0px 1px 1px #fcfdfd;
+}
+.footer a:hover,
+.footer .r a:hover,
+.footer .l a:hover 
+{
+  color: #a7a7a7;
+}
