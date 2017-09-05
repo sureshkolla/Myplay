@@ -71,7 +71,7 @@ article .form-text,
 	border-radius: 3px;
 	border: 1px solid #D6D3CE;
 	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.12) inset;
-	color: #333;
+	color: purple;
 	font-size: 14px;
 	padding: 7px;
 	width: 314px;
@@ -79,10 +79,6 @@ article .form-text,
 article .form-text {
 	width: 394px;
 }
-
-
-
-
 .node-pin-form {
 }
 
@@ -494,19 +490,19 @@ div.messages {
 header {
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.22);
   background: none repeat scroll 0% 0% #FFF;
-  height: 54px;
+  height: auto;
   position: fixed;
   z-index: 170;
   width: 100%;
 }
 header .Wrapper {
   width: 1500px;
-  margin: 10px auto 0px auto;
+  margin: 10px auto 10px auto;
 }
 header .rightHeader {
   float: right;
   margin-right: 7px;
-  width: 236px;
+   
   position: relative;
 }
 header .leftHeader {
@@ -514,8 +510,9 @@ header .leftHeader {
   margin-left: 7px;
   /*margin-right: 243px;*/
   padding-right: 14px;
-  width: auto;
+  min-width: 47%;
   position: relative;
+ /* z-index: 99;*/
 }
 header #logo {
   color: #D21900;
@@ -589,6 +586,7 @@ header #nav {
   position: relative;
   text-decoration: none;
   width: 46px;
+  display:none;
 }
 header #nav:hover {
   background: linear-gradient(#FFF, #EEE) repeat scroll 0% 0% transparent;
@@ -652,12 +650,13 @@ header .nav-drop .block {
 }
 
 header #search {
-    margin-right: 46px;
+   
     overflow: visible !important;
     box-sizing: border-box;
     float: none;
     height: 34px;
-    margin-left: 42px;
+    /* margin-right: 46px;
+    margin-left: 42px;*/
     width: auto;
     position: relative;
     text-align: left;
@@ -767,12 +766,12 @@ header #search .chosen-container.chosen-with-drop .chosen-drop {
 
 header #search .views-submit-button {
   position: absolute;
-  top: 0;
+  top: -1px;
   right: 130px;
   overflow: hidden;
   width: 35px;
-  height: 35px;
-
+  height: 34px;
+  right: -34px;
   display: block;
   font-family: FontAwesome;
   font-style: normal;
@@ -780,6 +779,10 @@ header #search .views-submit-button {
   line-height: 30px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  border: 1px solid #dadada;
+    background-color: #eaeaea;
+    border-radius: 0px 6px 6px 0px;
+    border-left: 0px;
 }
 header #search .form-submit {
   position: absolute;
@@ -4891,7 +4894,7 @@ font-size: 14px;
   .category_related.fol .inn,
   .footer .inn
   {
-    width: 1000px;
+     width: 1000px; 
   }
   .boardpinsmap .pin_page {
     width: 500px;
@@ -4901,6 +4904,46 @@ font-size: 14px;
     width: 910px;
   }
 }
+@media only screen and (max-width: 750px){
+  #menu-wraper{
+    padding-left:0px;
+    display:none;
+  }
+  #selectmenu .custommenu ul.menu{
+    padding-left:0px;
+    display:block;
+  }
+  .custommenu ul.menu li {
+    display: inline;    
+    margin: 0px 10px;
+}
+  #selectmenu {
+    width: 70%;
+    margin: 0 auto;
+    margin-top:10px;
+  }
+  header .leftHeader { 
+    width: auto;
+  }
+  .header{
+    height:auto;
+  }
+header #logo.customlogo {
+   display: block;
+    width: 100%;
+    height:auto;
+    padding-bottom: 15px;
+}
+ 
+}
+@media only screen and (min-width: 750px){
+  #selectmenu .custommenu ul.menu{
+    padding-left:0px;
+    display:none;
+  }
+}
+ 
+ 
 @media only screen and (min-width: 750px) and (max-width: 999px) {
   /* 3 */
   .pin_page,
@@ -4923,9 +4966,7 @@ font-size: 14px;
   .comments .form-textarea-wrapper textarea {
     width: 640px;
   }
-  header .rightHeader {
-    width: 67px;
-  }
+ 
   header #userlogin,
   header #userregister,
   header .useraccount
@@ -4944,7 +4985,7 @@ font-size: 14px;
   }
 
   header .leftHeader {
-    margin-right: 75px;
+    /*margin-right: 75px;*/
     padding-right: 7px;
   }
   header .nav-drop {
@@ -5066,13 +5107,12 @@ font-size: 14px;
   header #search,
   header #search.customlogo
    {
-   margin: 0px 0px;
-    clear: both;
-    width: 100%;
+      width: 85%;
+      margin: 0 auto;
   }
   header #search .inn {
     border: 1px solid #D4D4D4;
-    border-radius: 6px;
+    /*border-radius: 6px;*/
   }
   header #search .chosen-container .chosen-drop {
     right: 0;
@@ -5105,6 +5145,9 @@ font-size: 14px;
   }
 }
 @media only screen and (max-width: 499px) {
+  #selectmenu {
+    width: 100%;
+  }
   /* 1 */
   .boardpage,
   .category_related.fol .inn,
@@ -5225,13 +5268,13 @@ font-size: 14px;
   header #search,
   header #search.customlogo
    {
-   margin: 0px 0px;
+    margin: 0px 0px;
     clear: both;
-    width: 100%;
+    width: 90%;
   }
   header #search .inn {
     border: 1px solid #D4D4D4;
-    border-radius: 6px;
+    /*border-radius: 6px;*/
   }
   header #search .chosen-container .chosen-drop {
     right: 0;
@@ -5372,12 +5415,39 @@ font-size: 14px;
     margin: 0px;
 }
 }
-#block-system-main-menu{
-  display:none;
+  
+header ul.menu li.expanded > a{
+   color: #838383;
+   font-size: 14px;
+   font-weight: bold;
 }
- 
-header ul.menu   li.expanded > a{
-     color: #838383;
-     font-size: 14px;
-    font-weight: bold;
+.custommenu {
+    z-index: 100;
+    position: relative;
 }
+.custommenu ul.menu{
+  padding-left:0px;
+}
+.custommenu ul.menu li{   
+  display: inline;
+  clear: both;
+  margin: 0px 20px;
+}
+.custommenu ul.menu li ul{
+   float:left;
+   width: 100%;
+}
+.custommenu ul.menu li ul li{
+    display: inline-block;
+
+}
+#menu-wraper{
+float:left;
+height:30px;
+width: 65%;
+}
+/* <div class="inn custommenu">  <?php echo render($page['content_bottom']); ?></div>
+ regions[content_bottom] = content Bottom  
+main.js line 666
+//createMenu($this);
+*/

@@ -36,9 +36,23 @@ if (!(isset($page['content']['system_main']['nodes'][$arg1]) and isset($page['co
       <?php } else { ?>
         <a href="<?php print check_url($front_page); ?>" title="<?php print $site_name; ?>" rel="home" id="logo" class="customlogo"><img src="<?php //print $logo; ?>" alt="CriketGems" /></a>
       <?php } ?>
-  <div style="float:left;height:30px;width: 28%;"></div>
+  <div id="menu-wraper" >
+    <div class="inn custommenu">  <?php echo render($page['content_bottom']); ?></div>
+  </div>
   <?php if ($language->direction) { ?>
     <div id="mobmenu"><i class="fa fa-bars"></i></div>
+     <div class="leftHeader">      
+      <a href="#" title="" rel="nav" id="nav"><i class="fa fa-bars"></i></a>
+      <div class="nav-drop"><?php echo render($page['sidebar_drop_menu']); ?></div>
+      <div id="search"<?php if (!theme_get_setting('default_logo')) { print ' class="customlogo"'; } ?>>
+        <div class="inn">
+          <?php echo render($page['sidebar_search']); ?>
+        </div>
+      </div>
+      <div id="selectmenu">
+          <div class="inn custommenu">  <?php echo render($page['content_bottom']); ?></div>
+      </div>  
+    </div>
     <div class="rightHeader">
       <?php if ($user->uid) { ?>
         <a id="notifications"><i class="fa fa-bell"></i></a>
@@ -55,8 +69,13 @@ if (!(isset($page['content']['system_main']['nodes'][$arg1]) and isset($page['co
         <a id="userregisterm" class="inovr" href="<?php echo url('user/register'); ?>"><i class="fa fa-user-plus"></i></a>
       <?php } ?>
     </div>
-    <div class="leftHeader">
-      
+
+   
+
+    <?php } else { ?>
+    <div id="mobmenu"><i class="fa fa-bars"></i></div> 
+
+    <div class="leftHeader">   
       <a href="#" title="" rel="nav" id="nav"><i class="fa fa-bars"></i></a>
       <div class="nav-drop"><?php echo render($page['sidebar_drop_menu']); ?></div>
       <div id="search"<?php if (!theme_get_setting('default_logo')) { print ' class="customlogo"'; } ?>>
@@ -64,10 +83,11 @@ if (!(isset($page['content']['system_main']['nodes'][$arg1]) and isset($page['co
           <?php echo render($page['sidebar_search']); ?>
         </div>
       </div>
-      <div id="selectmenu"></div>  
+      <div id="selectmenu">
+        <div class="inn custommenu">  <?php echo render($page['content_bottom']); ?></div>
+      </div>  
     </div>
-    <?php } else { ?>
-    <div id="mobmenu"><i class="fa fa-bars"></i></div>
+    <?php } ?>   
     <div class="rightHeader">
       <?php if ($user->uid) { ?>
         <a id="notifications"><i class="fa fa-bell"></i></a>
@@ -84,20 +104,9 @@ if (!(isset($page['content']['system_main']['nodes'][$arg1]) and isset($page['co
         <a id="userregisterm" class="inovr" href="<?php echo url('user/register'); ?>"><i class="fa fa-user-plus"></i></a>
       <?php } ?>
     </div>
-    <div class="leftHeader">
-   
-      <a href="#" title="" rel="nav" id="nav"><i class="fa fa-bars"></i></a>
-      <div class="nav-drop"><?php echo render($page['sidebar_drop_menu']); ?></div>
-      <div id="search"<?php if (!theme_get_setting('default_logo')) { print ' class="customlogo"'; } ?>>
-        <div class="inn">
-          <?php echo render($page['sidebar_search']); ?>
-        </div>
-      </div>
-      <div id="selectmenu"></div>  
-    </div>
-    <?php } ?>   
     <div class="clr"></div>
   </div>
+
 </header>
 <article>
     <div class="main">
