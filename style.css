@@ -501,8 +501,7 @@ header .Wrapper {
 }
 header .rightHeader {
   float: right;
-  margin-right: 7px;
-   
+  margin-right: 2px;   
   position: relative;
 }
 header .leftHeader {
@@ -510,7 +509,7 @@ header .leftHeader {
   margin-left: 7px;
   /*margin-right: 243px;*/
   padding-right: 14px;
-  min-width: 47%;
+  min-width: 30%;
   position: relative;
  /* z-index: 99;*/
 }
@@ -561,6 +560,7 @@ header #logo.customlogo {
   margin-top: -5px;
   text-align: center;
     font-size: 30px;
+border:0px;
 }
 header #logo.customlogo:hover {
   background: none;
@@ -1045,7 +1045,7 @@ header .useraccount {
     color: #B8B8B8;
     position: relative;
     text-align: left;
-    width: 195px;
+    width: 110px;
     white-space: nowrap;
     line-height: normal;
     overflow: hidden;
@@ -4886,6 +4886,30 @@ font-size: 14px;
     width: 500px;
   }
 }
+@media only screen and (min-width: 750px) and (max-width: 1250px) {
+
+.custommenu ul.menu li{   
+   margin: 0px 2px !important;
+}
+}
+@media only screen and (min-width: 750px) and (max-width: 1000px) {
+	header #search .form-type-textfield {
+   margin: 5px 110px 0px 10px;
+    width: auto;
+}
+header #logo.customlogo{
+font-size:25px;
+}
+.custommenu ul.menu li{   
+   margin: 0px 20px;
+}
+header #search .form-type-select.chosen-ena {
+    width: 110px;
+ }
+header #logo.customlogo{
+	width:175px;
+}
+}
 @media only screen and (min-width: 1000px) and (max-width: 1249px) {
   /* 4 */
   .pin_page,
@@ -4909,13 +4933,20 @@ font-size: 14px;
     padding-left:0px;
     display:none;
   }
+  #selectmenu{
+	  overflow: visible;
+  }
   #selectmenu .custommenu ul.menu{
     padding-left:0px;
-    display:block;
   }
   .custommenu ul.menu li {
     display: inline;    
     margin: 0px 10px;
+}
+ 
+#selectmenu .custommenu ul.menu li ul {
+    position: absolute;
+    width: 80% !important;
 }
   #selectmenu {
     width: 70%;
@@ -4923,7 +4954,7 @@ font-size: 14px;
     margin-top:10px;
   }
   header .leftHeader { 
-    width: auto;
+    width: 90%;
   }
   .header{
     height:auto;
@@ -4932,7 +4963,7 @@ header #logo.customlogo {
    display: block;
     width: 100%;
     height:auto;
-    padding-bottom: 15px;
+    /*padding-bottom: 15px;*/
 }
  
 }
@@ -5425,8 +5456,9 @@ header ul.menu li.expanded > a{
     z-index: 100;
     position: relative;
 }
-.custommenu ul.menu{
+#menu-wraper .custommenu ul.menu{
   padding-left:0px;
+   
 }
 .custommenu ul.menu li{   
   display: inline;
@@ -5434,17 +5466,58 @@ header ul.menu li.expanded > a{
   margin: 0px 20px;
 }
 .custommenu ul.menu li ul{
-   float:left;
-   width: 100%;
+    float: left;
+    width: 100%;
+    background: #fff;
+    margin-top: 6px;
+    box-shadow: 0 1px 5px #000;
 }
-.custommenu ul.menu li ul li{
-    display: inline-block;
-
+ 
+ul.menu li ul.menu li.leaf {
+  display: inline-block;
+    width: 47% !important;
+    margin: 0px 1px !important;
+    padding: 0px 0px 0px 5px; 
+    line-height: 30px;
+}
+ 
+header .custommenu ul.menu li.expanded > a{
+  color: red !important;
+  font-size: 14px;
+  font-weight: bold;
+}
+header ul.menu li > a.active{
+  color: #4c2424 !important;
+  font-size: 14px;
+  font-weight: bold;
+}
+header ul.menu li.collapsed > a:after {
+    content: "\25B2";
+    color: #000;
+    position: relative;
+    margin-left: 3px;
+    top: 1px;
+    font-size: 10px;
+}
+header ul.menu li.expanded > a:after {
+    content: "\25B2";
+    color: red;
+    position: relative;    
+    margin-left: 3px;
+    top: 1px;
+    font-size: 10px;
+}
+header ul.menu li > a.active:after {
+    content: "\25BC";
+    color: red;    
 }
 #menu-wraper{
 float:left;
 height:30px;
-width: 65%;
+width: 30%;
+}
+#selectmenu {
+    overflow: visible !important;
 }
 /* <div class="inn custommenu">  <?php echo render($page['content_bottom']); ?></div>
  regions[content_bottom] = content Bottom  
