@@ -5464,6 +5464,7 @@ header ul.menu li.expanded > a{
   display: inline;
   clear: both;
   margin: 0px 20px;
+      line-height: 40px;
 }
 .custommenu ul.menu li ul{
     float: left;
