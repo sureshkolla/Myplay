@@ -1,0 +1,88 @@
+/* Foundation v2.1.4 http://foundation.zurb.com */
+/* Artfully masterminded by ZURB  */
+
+/* -------------------------------------------------- 
+   Table of Contents
+-----------------------------------------------------
+:: Shared Styles
+:: Page Name 1
+:: Page Name 2
+*/
+
+
+/* -----------------------------------------
+   Shared Styles
+----------------------------------------- */
+
+table th { font-weight: bold; }
+table td, table th { padding: 9px 10px; text-align: left; }
+.appendedth{display:none}
+/* Mobile */
+@media only screen and (max-width: 767px) {
+	
+	table.responsive { margin-bottom: 0; }
+	
+	.pinned { position: absolute; left: 0; top: 0; background: #fff; width: 35%; overflow: hidden; /*overflow-x: scroll; border-right: 1px solid #ccc; border-left: 1px solid #ccc;*/ }
+	.performance-page table.performance-table thead tr.middle-header>th.cumulative-returns, .performance-page table.performance-table thead tr.middle-header>th.aatr {
+		border-left: 0px solid #a8a8a8 !important;
+	}
+	.appendedth{display:block}
+	.pinned table { border-right: none; border-left: none; width: 100%; }
+	.pinned table th, .pinned table td { white-space: nowrap; }
+	.pinned td:last-child { border-bottom: 0; }
+	
+	div.table-wrapper { position: relative; margin-bottom: 20px; overflow: hidden; border-right: 1px solid #ccc; }
+	div.table-wrapper div.scrollable { margin-left: 35%; }
+	div.table-wrapper div.scrollable { overflow: scroll; overflow-y: hidden; }	
+	
+	table.responsive td, table.responsive th { position: relative; white-space: nowrap; overflow: hidden; }
+	table.responsive th:first-child, table.responsive td:first-child, table.responsive td:first-child, table.responsive.pinned td { display: none; }
+	
+	.pinned table th,.pinned table td{
+		padding:0px !important;
+	}
+}
+
+
+.scrollable{
+	 
+}
+.handle {
+    display: block;
+    width: 20px;
+    height: 55px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    pointer-events: auto;
+    z-index: 200;
+}
+ .handle:after {
+    color: #f58000;
+    font-size: 55px;
+    font-size: 5.5rem;
+    line-height: 55px;
+    line-height: 5.5rem;
+    opacity: 1;
+    padding: 0;
+}
+.handle.right {
+    right: 0;
+}
+.handle.left:after {
+    content: "\f104";
+    padding-left: 2px;
+    padding-left: 0.2rem;
+}
+.handle.right:after {
+    content: "\f105";
+    padding-left: 2px;
+    padding-left: 0.2rem;
+}
+.handle.right.max {
+    display: none;
+}
+.handle.left.min {
+    display: none;
+}
